@@ -1,11 +1,17 @@
 package com.spring.eccomerce.dto.categoria;
 
-import java.time.LocalDate;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
+
+@Builder
+@Setter @Getter
 public class CategoriaResponseDTO {
 
     private Long id;
     private String nombre;
-    private LocalDate fechaCreacion;
-    private LocalDate fechaActualizacion;
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaActualizacion;
 }

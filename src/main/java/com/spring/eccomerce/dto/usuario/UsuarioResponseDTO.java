@@ -1,9 +1,14 @@
 package com.spring.eccomerce.dto.usuario;
 
 import com.spring.eccomerce.dto.rol.RolReponseDTO;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Builder
+@Setter @Getter
 public class UsuarioResponseDTO {
 
     private Long id;
