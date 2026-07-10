@@ -52,6 +52,8 @@ public class ProductoMapper {
                 .nombre(producto.getNombre())
                 .precio(producto.getPrecio())
                 .urlImagen(producto.getUrlImagen())
+                .existencia(producto.getExistencia())
+                .categoria(categoriaMapper.toResumenDTO(producto.getCategoria()))
                 .build();
     }
 }

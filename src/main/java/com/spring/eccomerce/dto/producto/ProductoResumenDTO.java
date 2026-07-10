@@ -1,5 +1,6 @@
 package com.spring.eccomerce.dto.producto;
 
+import com.spring.eccomerce.dto.categoria.CategoriaResumenDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,4 +15,6 @@ public class ProductoResumenDTO {
     private String nombre;
     private BigDecimal precio;
     private String urlImagen;
+    private Integer existencia;
+    private CategoriaResumenDTO categoria;
 }
