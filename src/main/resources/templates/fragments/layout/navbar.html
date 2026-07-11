@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<nav
+        th:fragment="navbar"
+        class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container">
+
+        <a class="navbar-brand"
+           th:href="@{/}">
+
+            <i class="bi bi-shop"></i>
+
+            E-Commerce
+
+        </a>
+
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbar">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div
+                class="collapse navbar-collapse"
+                id="navbar">
+
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       th:href="@{/}">
+
+                        <i class="bi bi-house"></i>
+
+                        Inicio
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       th:href="@{/productos}">
+
+                        <i class="bi bi-box-seam"></i>
+
+                        Productos
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       th:href="@{/categorias}">
+
+                        <i class="bi bi-grid"></i>
+
+                        Categorías
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+            <form
+                    class="d-flex me-3"
+                    method="get"
+                    th:action="@{/productos}">
+
+                <input
+                        class="form-control"
+                        type="search"
+                        name="nombre"
+                        placeholder="Buscar productos">
+
+            </form>
+
+            <a
+                    class="btn btn-outline-light"
+                    th:href="@{/login}">
+
+                <i class="bi bi-person"></i>
+
+                Iniciar sesión
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+</body>
+
+</html>

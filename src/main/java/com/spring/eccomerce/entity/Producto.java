@@ -40,7 +40,7 @@ public class Producto extends Bitacora {
     @Column(name = "url_imagen", nullable = false, length = 250)
     private String urlImagen;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categoria")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 }

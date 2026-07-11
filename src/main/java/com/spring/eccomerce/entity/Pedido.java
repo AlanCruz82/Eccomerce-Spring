@@ -27,8 +27,8 @@ public class Pedido extends Bitacora {
     @Column(name = "importe_total", nullable = false)
     private BigDecimal importeTotal;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
 }

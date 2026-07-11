@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout/header :: header('Productos')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/layout/navbar :: navbar}"></div>
+
+<main class="container py-4">
+
+  <!-- Encabezado -->
+
+  <div class="row mb-4">
+
+    <div class="col">
+
+      <h2>
+
+        <i class="bi bi-box-seam"></i>
+
+        Catálogo de productos
+
+      </h2>
+
+      <p class="text-muted">
+
+        Encuentra el producto que estás buscando.
+
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- Filtros -->
+
+  <div th:replace="~{fragments/producto/filtros :: filtros}"></div>
+
+  <!-- Cantidad de resultados -->
+
+  <div class="mb-3">
+
+        <span class="fw-semibold">
+
+            Productos encontrados:
+
+        </span>
+
+    <span th:text="${productos.totalElements}"></span>
+
+  </div>
+
+  <!-- Productos -->
+
+  <div class="row g-4">
+
+    <div
+            class="col-12 col-md-6 col-lg-4"
+            th:each="producto : ${productos.content}">
+
+      <div
+              th:replace="~{fragments/producto/tarjeta :: tarjeta(${producto})}">
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Sin resultados -->
+
+  <div
+          class="alert alert-warning mt-4"
+          th:if="${productos.totalElements == 0}">
+
+    <i class="bi bi-exclamation-circle"></i>
+
+    No se encontraron productos.
+
+  </div>
+
+  <!-- Paginación -->
+
+  <div class="mt-5">
+
+    <div
+            th:replace="~{fragments/producto/paginacion :: paginacion(${productos})}">
+    </div>
+
+  </div>
+
+</main>
+
+<div th:replace="~{fragments/layout/footer :: footer}"></div>
+
+<div th:replace="~{fragments/layout/scripts :: scripts}"></div>
+
+</body>
+
+</html>

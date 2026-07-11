@@ -18,6 +18,6 @@ public abstract class Bitacora {
     private LocalDateTime fechaCreacion;
 
     @UpdateTimestamp
-    @Column(name = "fecha_actualizacion")
+    @Column(name = "fecha_actualizacion", nullable = false)
     private LocalDateTime fechaActualizacion;
 }

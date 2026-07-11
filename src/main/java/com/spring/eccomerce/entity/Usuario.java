@@ -35,7 +35,7 @@ public class Usuario extends Bitacora {
     private Boolean activo = true;
 
     //Carga perezosa, para no traer todos los roles de todos los usuarios al consultarlo
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_rol")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 }

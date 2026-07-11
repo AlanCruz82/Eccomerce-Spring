@@ -36,11 +36,12 @@ public class ProductoServiceImpl implements ProductoService {
         Specification<Producto> especificaciones = Specification.where(ProductoSpecification.categoriaIdEquals(filtroDTO.getCategoriaId()))
                 .and(ProductoSpecification.nombreLike(filtroDTO.getNombre()))
                 .and(ProductoSpecification.precioGreatherOrEquall(filtroDTO.getPrecioMaximo()))
-                .and(ProductoSpecification.precioLessThanOrEqual(filtroDTO.getPrecioMinimo()))
-                .and(ProductoSpecification.existenciaGreatherThan(filtroDTO.getExistencia()));
+                .and(ProductoSpecification.precioLessThanOrEqual(filtroDTO.getPrecioMinimo()));
 
         //Obtenemos la pagina de productos con las especificaciones indicadas y convertimos los productos de la pagina
         //en resumenes de productos
+
+        System.out.println("Elementos obtenido de la especificacion : " + productoRepository.findAll(especificaciones, pagina).getTotalElements());
         return productoRepository.findAll(especificaciones, pagina).map(productoMapper::toResumenDTO);
     }
 
