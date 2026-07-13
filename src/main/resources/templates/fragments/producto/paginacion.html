@@ -1,101 +1,47 @@
 <div xmlns:th="http://www.thymeleaf.org"
      th:fragment="paginacion(page)">
 
-    <nav th:if="${page.totalPages > 1}">
-
+    <nav aria-label="Product navigation" th:if="${page.totalPages > 0}">
         <ul class="pagination justify-content-center">
 
-            <!-- Primera -->
-
-            <li class="page-item"
-                th:classappend="${page.first} ? 'disabled'">
-
-                <a class="page-link"
-                   th:href="@{/productos(page=0,
+            <!-- Pagina previa-->
+            <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+                <a class="page-link" th:href="@{/productos(pagina=0,
                         nombre=${filtro.nombre},
                         categoriaId=${filtro.categoriaId},
                         precioMinimo=${filtro.precioMinimo},
-                        precioMaximo=${filtro.precioMaximo})}">
-
-                    «
-
+                        precioMaximo=${filtro.precioMaximo})}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
                 </a>
-
             </li>
 
-            <!-- Anterior -->
-
+            <!-- Numeros de paginas -->
             <li class="page-item"
-                th:classappend="${page.first} ? 'disabled'">
-
+                th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                th:classappend="${i == page.number} ? 'active'">
                 <a class="page-link"
-                   th:href="@{/productos(page=${page.number-1},
+                   th:href="@{/productos(pagina=${i},
                         nombre=${filtro.nombre},
                         categoriaId=${filtro.categoriaId},
                         precioMinimo=${filtro.precioMinimo},
-                        precioMaximo=${filtro.precioMaximo})}">
-
-                    ‹
-
-                </a>
-
+                        precioMaximo=${filtro.precioMaximo})}"
+                   th:text="${i + 1}"></a>
             </li>
 
-            <!-- Números -->
-
-            <li class="page-item"
-                th:each="i : ${#numbers.sequence(0,page.totalPages-1)}"
-                th:classappend="${i==page.number}? 'active'">
-
-                <a class="page-link"
-                   th:text="${i+1}"
-                   th:href="@{/productos(page=${i},
+            <!-- Siguiente pagina-->
+            <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+                <a class="page-link" th:href="@{/productos(pagina=${page.number + 1},
                         nombre=${filtro.nombre},
                         categoriaId=${filtro.categoriaId},
                         precioMinimo=${filtro.precioMinimo},
-                        precioMaximo=${filtro.precioMaximo})}">
+                        precioMaximo=${filtro.precioMaximo})}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
                 </a>
-
-            </li>
-
-            <!-- Siguiente -->
-
-            <li class="page-item"
-                th:classappend="${page.last}? 'disabled'">
-
-                <a class="page-link"
-                   th:href="@{/productos(page=${page.number+1},
-                        nombre=${filtro.nombre},
-                        categoriaId=${filtro.categoriaId},
-                        precioMinimo=${filtro.precioMinimo},
-                        precioMaximo=${filtro.precioMaximo})}">
-
-                    ›
-
-                </a>
-
-            </li>
-
-            <!-- Última -->
-
-            <li class="page-item"
-                th:classappend="${page.last}? 'disabled'">
-
-                <a class="page-link"
-                   th:href="@{/productos(page=${page.totalPages-1},
-                        nombre=${filtro.nombre},
-                        categoriaId=${filtro.categoriaId},
-                        precioMinimo=${filtro.precioMinimo},
-                        precioMaximo=${filtro.precioMaximo})}">
-
-                    »
-
-                </a>
-
             </li>
 
         </ul>
-
     </nav>
 
 </div>

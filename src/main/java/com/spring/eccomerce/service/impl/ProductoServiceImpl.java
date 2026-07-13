@@ -40,8 +40,6 @@ public class ProductoServiceImpl implements ProductoService {
 
         //Obtenemos la pagina de productos con las especificaciones indicadas y convertimos los productos de la pagina
         //en resumenes de productos
-
-        System.out.println("Elementos obtenido de la especificacion : " + productoRepository.findAll(especificaciones, pagina).getTotalElements());
         return productoRepository.findAll(especificaciones, pagina).map(productoMapper::toResumenDTO);
     }
 
