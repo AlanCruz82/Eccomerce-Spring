@@ -1,5 +1,6 @@
 package com.spring.eccomerce.dto.usuario;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -10,6 +11,7 @@ public class LoginRequestDTO {
 
     @NotBlank(message = "El correo electronico del usuario no puede ser vacio")
     @Size(max = 250, message = "El correo del usuario no puede tener mas de 250 caracteres")
+    @Email(message = "Correo electronico invalido")
     private String correoElectronico;
 
     @NotBlank(message = "La contrasena del usuario no puede ser vacio")
