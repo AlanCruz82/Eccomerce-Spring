@@ -1,6 +1,7 @@
 package com.spring.eccomerce.mapper;
 
 import com.spring.eccomerce.dto.categoria.CategoriaResumenDTO;
+import com.spring.eccomerce.dto.producto.ProductoDetalleDTO;
 import com.spring.eccomerce.dto.producto.ProductoRequestDTO;
 import com.spring.eccomerce.dto.producto.ProductoResponseDTO;
 import com.spring.eccomerce.dto.producto.ProductoResumenDTO;
@@ -50,6 +51,19 @@ public class ProductoMapper {
         return ProductoResumenDTO.builder()
                 .id(producto.getId())
                 .nombre(producto.getNombre())
+                .precio(producto.getPrecio())
+                .urlImagen(producto.getUrlImagen())
+                .existencia(producto.getExistencia())
+                .categoria(categoriaMapper.toResumenDTO(producto.getCategoria()))
+                .build();
+    }
+
+    public ProductoDetalleDTO toDetalleDTO(Producto producto){
+        //Generamos el detalle del producto referenciando los campos de la entidad producto con los del detalleDTO
+        return ProductoDetalleDTO.builder()
+                .id(producto.getId())
+                .nombre(producto.getNombre())
+                .descripcion(producto.getDescripcion())
                 .precio(producto.getPrecio())
                 .urlImagen(producto.getUrlImagen())
                 .existencia(producto.getExistencia())

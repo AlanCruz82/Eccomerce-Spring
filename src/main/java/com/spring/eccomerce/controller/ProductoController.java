@@ -1,9 +1,6 @@
 package com.spring.eccomerce.controller;
 
-import com.spring.eccomerce.dto.producto.ProductoFiltroDTO;
-import com.spring.eccomerce.dto.producto.ProductoRequestDTO;
-import com.spring.eccomerce.dto.producto.ProductoResponseDTO;
-import com.spring.eccomerce.dto.producto.ProductoResumenDTO;
+import com.spring.eccomerce.dto.producto.*;
 import com.spring.eccomerce.service.CategoriaService;
 import com.spring.eccomerce.service.ProductoService;
 import jakarta.validation.Valid;
@@ -57,7 +54,7 @@ public class ProductoController {
 
     @GetMapping("/{id}/editar")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
-        ProductoResponseDTO response = productoService.obtenerProductoPorId(id);
+        ProductoDetalleDTO response = productoService.obtenerProductoPorId(id);
         ProductoRequestDTO requestDTO = new ProductoRequestDTO();
         requestDTO.setNombre(response.getNombre());
         requestDTO.setDescripcion(response.getDescripcion());

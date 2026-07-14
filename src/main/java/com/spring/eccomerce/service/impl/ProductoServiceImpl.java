@@ -1,9 +1,6 @@
 package com.spring.eccomerce.service.impl;
 
-import com.spring.eccomerce.dto.producto.ProductoFiltroDTO;
-import com.spring.eccomerce.dto.producto.ProductoRequestDTO;
-import com.spring.eccomerce.dto.producto.ProductoResponseDTO;
-import com.spring.eccomerce.dto.producto.ProductoResumenDTO;
+import com.spring.eccomerce.dto.producto.*;
 import com.spring.eccomerce.entity.Categoria;
 import com.spring.eccomerce.entity.Producto;
 import com.spring.eccomerce.mapper.ProductoMapper;
@@ -44,14 +41,14 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public ProductoResponseDTO obtenerProductoPorId(Long id) {
+    public ProductoDetalleDTO obtenerProductoPorId(Long id) {
         //Verificamos si el producto con el id enviado como argumento existe en la base de datos
         Producto producto = productoRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("El producto con el id " + id + " no existe")
         );
 
         //Si existe, regresamos el producto del id como responseDTO
-        return productoMapper.toDTO(producto);
+        return productoMapper.toDetalleDTO(producto);
     }
 
     @Override
