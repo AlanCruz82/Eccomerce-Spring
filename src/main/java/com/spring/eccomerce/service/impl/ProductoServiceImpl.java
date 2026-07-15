@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 //Inyectamos las depedencias por constructor
 @RequiredArgsConstructor
 @Service
@@ -99,6 +101,12 @@ public class ProductoServiceImpl implements ProductoService {
         //Actualizamos el producto en la base de datos y regresamos el producto en resumenDTO
         return productoMapper.toResumenDTO(productoRepository.save(productoActualizado));
 
+    }
+
+    @Override
+    public List<ProductoResumenDTO> obtenerProductosDestacados() {
+        //Regresamos la lista de productos destacados en el formato de resumenDTO del producto
+        return productoRepository.findTop8ByOrderByIdDesc().stream().map(productoMapper::toResumenDTO).toList();
     }
 
     @Override

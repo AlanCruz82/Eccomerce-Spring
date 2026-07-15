@@ -1,0 +1,46 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="hero">
+
+    <section class="bg-primary text-white rounded-4 p-5 mb-5 shadow">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-7">
+
+                <h1 class="display-4 fw-bold">
+
+                    Bienvenido, Tú
+                    E-Commerce favorito
+
+                </h1>
+
+                <p class="lead mt-3">
+
+                    Encuentra una gran variedad de productos con la mejor calidad
+                    y al mejor precio.
+
+                </p>
+
+                <a
+                        th:href="@{/productos}"
+                        class="btn btn-light btn-lg mt-3">
+
+                    <i class="bi bi-shop"></i>
+
+                    Explorar catálogo
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-5 text-center">
+
+                <i class="bi bi-bag-check display-1"></i>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>

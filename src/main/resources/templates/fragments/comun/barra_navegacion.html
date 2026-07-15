@@ -1,0 +1,33 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="navegacion(seccion,actual)">
+
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item">
+
+                <a th:href="@{/}">
+
+                    Inicio
+
+                </a>
+
+            </li>
+
+            <li class="breadcrumb-item">
+                <a th:href="@{/${#strings.toLowerCase(seccion)}}"
+                   th:text="${seccion}">
+                </a>
+
+            </li>
+
+            <li class="breadcrumb-item active"
+                aria-current="page"
+                th:text="${actual}">
+            </li>
+
+        </ol>
+
+    </nav>
+</div>
