@@ -21,14 +21,14 @@ public class ProductoSpecification {
     }
 
     //Consulta por precio minimo o igual al enviado como argumento
-    public static Specification<Producto> precioLessThanOrEqual(Double precioMinimo){
+    public static Specification<Producto> precioLessThanOrEqual(BigDecimal precioMinimo){
         return  (root, query, criteriaBuilder) ->
                 precioMinimo == null ? null : criteriaBuilder.lessThanOrEqualTo
                         (root.get("precio"), precioMinimo);
     }
 
     //Consulta por precio maximo o igual al enviado como argumento
-    public static Specification<Producto> precioGreatherOrEquall(Double precioMaximo){
+    public static Specification<Producto> precioGreatherOrEquall(BigDecimal precioMaximo){
         return  (root, query, criteriaBuilder) ->
                 precioMaximo == null ? null : criteriaBuilder.greaterThanOrEqualTo
                         (root.get("precio"), precioMaximo);
