@@ -4,11 +4,11 @@ import com.spring.eccomerce.dto.carrito.CarritoDTO;
 import com.spring.eccomerce.dto.carrito.ItemCarritoDTO;
 import com.spring.eccomerce.entity.Producto;
 import com.spring.eccomerce.mapper.CarritoMapper;
-import com.spring.eccomerce.mapper.ProductoMapper;
 import com.spring.eccomerce.repository.ProductoRepository;
 import com.spring.eccomerce.service.CarritoService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -38,6 +38,7 @@ public class CarritoServiceImpl implements CarritoService {
 
         return carrito;
     }
+
     @Override
     public CarritoDTO obtenerCarrito() {
         return obtenerCarritoSesion();
@@ -49,6 +50,7 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
+    @SneakyThrows
     public void agregarProducto(Long idProducto) {
         //Validamos si el producto que se quiere agregar existe en la base de datos
         Producto producto = productoRepository.findById(idProducto).orElseThrow(
@@ -57,15 +59,26 @@ public class CarritoServiceImpl implements CarritoService {
 
         //Si el carrito ya cuenta con el producto que se quiere agregar
         if(obtenerCarritoSesion().contieneProducto(idProducto)){
-            //Aumentamos la cantidad del producto que se quiere agregar en uno
-            obtenerCarritoSesion().getItem(idProducto).setCantidad(obtenerCarritoSesion().getItem(idProducto).getCantidad() + 1);
+            //Obtenemos el item del carrito
+            ItemCarritoDTO item = obtenerCarritoSesion().getItem(idProducto);
+
+            //Si el item puede aumentar su cantidad dentro del carro (la cantidad deseada es menor a las existencias disponibles)
+            if(item.puedeAumentarCantidad()){
+                //Aumentamos la cantidad del producto que se quiere agregar en uno
+                obtenerCarritoSesion().getItem(idProducto).setCantidad(obtenerCarritoSesion().getItem(idProducto).getCantidad() + 1);
+            }else {
+                //Si ya no se puede aumentar la cantidad
+                //Avisamos que ya no se pueden agregar mas productos del producto con el id pasado como parametro
+                throw new Exception("Las existencias para el producto con id " + idProducto + " se han agotado");
+
+            }
         }else{
             //Si no, lo agregamos al carrito
 
             //Convertimos el producto obtenido de la base de datos a su formato de itemDTO
             ItemCarritoDTO item = carritoMapper.toItemDTO(producto);
-            //Establecemos la cantidad del item en el carrito
-            item.setCantidad(item.getCantidad() + 1);
+            //Establecemos la cantidad del item en el carrito en uno, por ser la primera vez que se coloca dentro del carrito
+            item.setCantidad(1);
 
             //Agregamos el item del producto al carrito de la sesion
             obtenerCarritoSesion().agregarItem(item);
@@ -78,13 +91,22 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
+    @SneakyThrows
     public void aumentarCantidad(Long idProducto) {
         //Obtenemos el item del carrito
         ItemCarritoDTO item = obtenerCarritoSesion().getItem(idProducto);
 
-        //Si su valor es diferente de nulo, aumentamos en uno la cantidad del producto dentro del carrito
+        //Si su valor es diferente de nulo
         if(item != null){
-            item.setCantidad(item.getCantidad() + 1);
+            //Y si aun quedan existencias del producto
+            if(item.puedeAumentarCantidad()){
+                //Aumentamos en uno la cantidad del producto dentro del carrito
+                item.setCantidad(item.getCantidad() + 1);
+            }else{
+                //Si no
+                //Avisamos que ya no se pueden agregar mas productos del producto con el id pasado como parametro
+                throw new Exception("Las existencias para el producto con id " + idProducto + " se han agotado");
+            }
         }
     }
 

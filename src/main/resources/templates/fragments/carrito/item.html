@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="item(item)">
+
+    <div class="card shadow-sm mb-3">
+
+        <div class="row g-0 align-items-center">
+
+            <div class="col-md-2 text-center">
+
+                <img
+                        th:src="@{${item.urlImagen}}"
+                        class="img-fluid rounded p-2"
+                        style="max-height:120px; object-fit:contain;">
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card-body">
+
+                    <h5
+                            th:text="${item.nombre}">
+                    </h5>
+
+                    <p class="text-muted mb-0">
+
+                        Precio unitario
+
+                    </p>
+
+                    <strong
+                            th:text="'$ ' + ${#numbers.formatDecimal(item.precio,1,'COMMA',2,'POINT')}">
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="d-flex justify-content-center align-items-center">
+
+                    <form
+                            th:action="@{/carrito/disminuir/{id}(id=${item.idProducto})}"
+                            method="post">
+
+                        <button class="btn btn-outline-secondary">
+
+                            -
+
+                        </button>
+
+                    </form>
+
+                    <span
+                            class="mx-3 fw-bold"
+                            th:text="${item.cantidad}">
+                    </span>
+
+                    <form
+                            th:action="@{/carrito/aumentar/{id}(id=${item.idProducto})}"
+                            method="post">
+
+                        <button
+                                type="submit"
+                                class="btn btn-outline-secondary"
+                                th:disabled="${!item.puedeAumentarCantidad()}">
+
+                            +
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-2 text-center">
+
+                <strong
+                        th:text="'$ ' + ${#numbers.formatDecimal(item.subtotal,1,'COMMA',2,'POINT')}">
+                </strong>
+
+            </div>
+
+            <div class="col-md-1 text-center">
+
+                <form
+                        th:action="@{/carrito/eliminar/{id}(id=${item.idProducto})}"
+                        method="post">
+
+                    <button
+                            class="btn btn-outline-danger">
+
+                        <i class="bi bi-trash"></i>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</html>

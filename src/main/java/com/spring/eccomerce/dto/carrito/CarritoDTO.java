@@ -1,9 +1,13 @@
 package com.spring.eccomerce.dto.carrito;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter @Getter
 public class CarritoDTO {
 
     private List<ItemCarritoDTO> items = new ArrayList<>();

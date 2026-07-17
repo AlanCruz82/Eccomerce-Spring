@@ -15,6 +15,7 @@ public class CarritoMapper {
         item.setNombre(producto.getNombre());
         item.setPrecio(producto.getPrecio());
         item.setUrlImagen(producto.getUrlImagen());
+        item.setCantidadDisponible(producto.getExistencia());
 
         return item;
     }

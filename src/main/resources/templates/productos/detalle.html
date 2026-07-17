@@ -57,15 +57,18 @@
 
             </div>
 
-            <button
-                    class="btn btn-primary btn-lg"
-                    th:disabled="${producto.existencia == 0}">
+            <form th:action="@{/carrito/agregar/{id}(id=${producto.id})}"
+                  method="post">
 
-                <i class="bi bi-cart-plus"></i>
+                <button type="submit"
+                        class="btn btn-success btn-lg">
 
-                Agregar al carrito
+                    <i class="bi bi-cart-plus"></i>
+                    Agregar al carrito
 
-            </button>
+                </button>
+
+            </form>
         </div>
     </div>
 
