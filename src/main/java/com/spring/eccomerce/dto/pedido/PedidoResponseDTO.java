@@ -19,6 +19,7 @@ public class PedidoResponseDTO {
     private EstadoPedido estadoPedido;
     private BigDecimal importeTotal;
     private UsuarioResumenDTO usuario;
+    private String direccionEnvio;
     private List<DetallesPedidoResponseDTO> detalles;
     private LocalDateTime fechaActualizacion;
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -27,8 +28,17 @@ public class Pedido extends Bitacora {
     @Column(name = "importe_total", nullable = false)
     private BigDecimal importeTotal;
 
+    @Column(name = "direccion_envio", length = 150, nullable = false)
+    private String direccionEnvio;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
+
+    //Relacion bidireccional, que utilizamos para poder usar el comportamiento en cascada para las operaciones del pedido
+    //y sus detalles registrados en DetallePedido
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<DetallePedido> detalles;
+
 
 }
