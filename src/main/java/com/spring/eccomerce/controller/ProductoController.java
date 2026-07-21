@@ -30,26 +30,26 @@ public class ProductoController {
         model.addAttribute("productos", productos);
         model.addAttribute("filtro", filtroDTO);
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        return "productos/lista";
+        return "producto/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("producto", new ProductoRequestDTO());
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        return "productos/formulario";
+        return "producto/formulario";
     }
 
     @PostMapping
     public String crearProducto(@Valid @ModelAttribute("producto") ProductoRequestDTO requestDTO) {
         ProductoResumenDTO creado = productoService.crearProducto(requestDTO);
-        return "redirect:/productos/" + creado.getId();
+        return "redirect:/producto/" + creado.getId();
     }
 
     @GetMapping("/{id}")
     public String verProducto(@PathVariable Long id, Model model) {
         model.addAttribute("producto", productoService.obtenerProductoPorId(id));
-        return "productos/detalle";
+        return "producto/detalle";
     }
 
     @GetMapping("/{id}/editar")
@@ -64,19 +64,19 @@ public class ProductoController {
         requestDTO.setIdCategoria(response.getCategoria().getId());
         model.addAttribute("producto", requestDTO);
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
-        return "productos/formulario";
+        return "producto/formulario";
     }
 
     @PostMapping("/{id}")
     public String actualizarProducto(@PathVariable Long id,
                                      @Valid @ModelAttribute("producto") ProductoRequestDTO requestDTO) {
         productoService.actualizarProducto(id, requestDTO);
-        return "redirect:/productos/" + id;
+        return "redirect:/producto/" + id;
     }
 
     @PostMapping("/{id}/eliminar")
     public String eliminarProducto(@PathVariable Long id) {
         productoService.eliminarProducto(id);
-        return "redirect:/productos";
+        return "redirect:/producto";
     }
 }

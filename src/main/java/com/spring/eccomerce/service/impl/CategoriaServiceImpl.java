@@ -4,11 +4,12 @@ import com.spring.eccomerce.dto.categoria.CategoriaRequestDTO;
 import com.spring.eccomerce.dto.categoria.CategoriaResponseDTO;
 import com.spring.eccomerce.dto.categoria.CategoriaResumenDTO;
 import com.spring.eccomerce.entity.Categoria;
+import com.spring.eccomerce.exception.CategoriaDuplicadaException;
+import com.spring.eccomerce.exception.CategoriaNotFoundException;
 import com.spring.eccomerce.mapper.CategoriaMapper;
 import com.spring.eccomerce.repository.CategoriaRepository;
 import com.spring.eccomerce.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,11 +25,10 @@ public class CategoriaServiceImpl implements CategoriaService {
     private final CategoriaMapper categoriaMapper;
 
     @Override
-    @SneakyThrows //TEMPORAL: para evitar manejo de excepciones en la firma del metodo
     public CategoriaResponseDTO crearCategoria(CategoriaRequestDTO nuevaCategoria) {
         //Validamos si ya existe una categoria con el nombre de la nuevaCategoria que se quiere agregar
         if(categoriaRepository.existsByNombreIgnoreCase(nuevaCategoria.getNombre())){
-            throw new Exception("La categoria con el nombre" + nuevaCategoria.getNombre() + " ya esta registrada");
+            throw new CategoriaDuplicadaException(nuevaCategoria.getNombre());
         }
 
         //Transformamos el dto enviado como parametro en una entidad categoria y la almacenamos en la base de datos
@@ -36,11 +36,10 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    @SneakyThrows
     public CategoriaResponseDTO actualizarCategoria(Long id, CategoriaRequestDTO nuevaCategoria) {
         //Verificamos si la categoria a actualizar existe en la base de datos
         Categoria categoriaActualizar = categoriaRepository.findById(id).orElseThrow(
-                () -> new Exception("La categoria con el id" + id + " no existe")
+                () -> new CategoriaNotFoundException(id)
         );
 
         //Actualizamos los campos de la categoria almacenada con los de la nuevaCategoria
@@ -51,11 +50,10 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    @SneakyThrows
     public void eliminarCategoria(Long id) {
         //Verificamos si la categoria a eliminar existe en la base de datos
         Categoria categoriaEliminar = categoriaRepository.findById(id).orElseThrow(
-                () -> new Exception("La categoria con el id" + id + " no existe")
+                () -> new CategoriaNotFoundException(id)
         );
 
         categoriaRepository.deleteById(id);

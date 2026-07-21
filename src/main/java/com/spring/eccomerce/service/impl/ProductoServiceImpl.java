@@ -3,13 +3,15 @@ package com.spring.eccomerce.service.impl;
 import com.spring.eccomerce.dto.producto.*;
 import com.spring.eccomerce.entity.Categoria;
 import com.spring.eccomerce.entity.Producto;
+import com.spring.eccomerce.exception.CategoriaNotFoundException;
+import com.spring.eccomerce.exception.ProductoDuplicadoException;
+import com.spring.eccomerce.exception.ProductoNotFoundException;
 import com.spring.eccomerce.mapper.ProductoMapper;
 import com.spring.eccomerce.repository.CategoriaRepository;
 import com.spring.eccomerce.repository.ProductoRepository;
 import com.spring.eccomerce.repository.specification.ProductoSpecification;
 import com.spring.eccomerce.service.ProductoService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -46,7 +48,7 @@ public class ProductoServiceImpl implements ProductoService {
     public ProductoDetalleDTO obtenerProductoPorId(Long id) {
         //Verificamos si el producto con el id enviado como argumento existe en la base de datos
         Producto producto = productoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("El producto con el id " + id + " no existe")
+                () -> new ProductoNotFoundException(id)
         );
 
         //Si existe, regresamos el producto del id como responseDTO
@@ -54,11 +56,10 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    @SneakyThrows
     public ProductoResumenDTO crearProducto(ProductoRequestDTO producto) {
         //Verificamos si ya existe un producto en la base de datos con el nombre del producto que se quiere agregar
         if (productoRepository.existsByNombreIgnoreCase(producto.getNombre())) {
-            throw new Exception("El producto con el nombre " + producto.getNombre() + " ya existe");
+            throw new ProductoDuplicadoException(producto.getNombre());
         }
 
         //Convertimos el dto enviado como argumento a una entidad de producto
@@ -66,7 +67,7 @@ public class ProductoServiceImpl implements ProductoService {
 
         //Obtenemos la categoria enviada como campo de dto que pertenece al producto
         Categoria categoria = categoriaRepository.findById(producto.getIdCategoria()).orElseThrow(
-                () -> new Exception("La categoria con id " + producto.getIdCategoria() + " asociada al producto, no existe")
+                () -> new CategoriaNotFoundException("La categoria con id " + producto.getIdCategoria() + " asociada al producto, no existe")
         );
 
         //Le asignamos la categoria a la entidad producto que acabamos de generar
@@ -80,7 +81,7 @@ public class ProductoServiceImpl implements ProductoService {
     public ProductoResumenDTO actualizarProducto(Long id, ProductoRequestDTO productoActualizar) {
         //Verificamos si el producto enviado como id existe en la base de datos
         Producto productoActualizado = productoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("El producto con id " + id + " no existe")
+                () -> new ProductoNotFoundException(id)
         );
 
         //Actualizamos los campos del producto con los enviados en el dto
@@ -92,7 +93,7 @@ public class ProductoServiceImpl implements ProductoService {
 
         //Validamos si la nueva categoria del producto existe en la base de datos
         Categoria categoria = categoriaRepository.findById(productoActualizar.getIdCategoria()).orElseThrow(
-                () -> new RuntimeException("La nueva categoria con id " + productoActualizar.getIdCategoria() + " no existe")
+                () -> new CategoriaNotFoundException("La nueva categoria con id " + productoActualizar.getIdCategoria() + " no existe")
         );
 
         //Actualizamos la categoria del producto a actualizar
@@ -113,7 +114,7 @@ public class ProductoServiceImpl implements ProductoService {
     public void eliminarProducto(Long id) {
         //Verificamos si el producto con el id enviado como argumento existe en nuestra base de datos
         Producto producto = productoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("El producto con el id " + id + " no existe")
+                () -> new ProductoNotFoundException(id)
         );
 
         //Eliminamos el producto con el id enviado como argumento

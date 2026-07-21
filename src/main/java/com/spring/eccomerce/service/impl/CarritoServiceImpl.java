@@ -3,12 +3,13 @@ package com.spring.eccomerce.service.impl;
 import com.spring.eccomerce.dto.carrito.CarritoDTO;
 import com.spring.eccomerce.dto.carrito.ItemCarritoDTO;
 import com.spring.eccomerce.entity.Producto;
+import com.spring.eccomerce.exception.ProductoNotFoundException;
+import com.spring.eccomerce.exception.StockInsuficienteException;
 import com.spring.eccomerce.mapper.CarritoMapper;
 import com.spring.eccomerce.repository.ProductoRepository;
 import com.spring.eccomerce.service.CarritoService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -50,11 +51,10 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    @SneakyThrows
     public void agregarProducto(Long idProducto) {
         //Validamos si el producto que se quiere agregar existe en la base de datos
         Producto producto = productoRepository.findById(idProducto).orElseThrow(
-                () -> new RuntimeException("El producto con id " +  idProducto + " no existe")
+                () -> new ProductoNotFoundException(idProducto)
         );
 
         //Si el carrito ya cuenta con el producto que se quiere agregar
@@ -67,9 +67,7 @@ public class CarritoServiceImpl implements CarritoService {
                 //Aumentamos la cantidad del producto que se quiere agregar en uno
                 obtenerCarritoSesion().getItem(idProducto).setCantidad(obtenerCarritoSesion().getItem(idProducto).getCantidad() + 1);
             }else {
-                //Si ya no se puede aumentar la cantidad
-                //Avisamos que ya no se pueden agregar mas productos del producto con el id pasado como parametro
-                throw new Exception("Las existencias para el producto con id " + idProducto + " se han agotado");
+                throw new StockInsuficienteException(idProducto);
 
             }
         }else{
@@ -91,7 +89,6 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    @SneakyThrows
     public void aumentarCantidad(Long idProducto) {
         //Obtenemos el item del carrito
         ItemCarritoDTO item = obtenerCarritoSesion().getItem(idProducto);
@@ -103,9 +100,7 @@ public class CarritoServiceImpl implements CarritoService {
                 //Aumentamos en uno la cantidad del producto dentro del carrito
                 item.setCantidad(item.getCantidad() + 1);
             }else{
-                //Si no
-                //Avisamos que ya no se pueden agregar mas productos del producto con el id pasado como parametro
-                throw new Exception("Las existencias para el producto con id " + idProducto + " se han agotado");
+                throw new StockInsuficienteException(idProducto);
             }
         }
     }

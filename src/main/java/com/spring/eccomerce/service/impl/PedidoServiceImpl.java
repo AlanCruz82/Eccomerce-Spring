@@ -6,6 +6,8 @@ import com.spring.eccomerce.dto.pedido.PedidoResumenDTO;
 import com.spring.eccomerce.entity.Pedido;
 import com.spring.eccomerce.entity.Usuario;
 import com.spring.eccomerce.entity.enums.EstadoPedido;
+import com.spring.eccomerce.exception.PedidoNotFoundException;
+import com.spring.eccomerce.exception.UsuarioNotFoundException;
 import com.spring.eccomerce.mapper.PedidoMapper;
 import com.spring.eccomerce.repository.PedidoRepository;
 import com.spring.eccomerce.repository.UsuarioRepository;
@@ -30,7 +32,7 @@ public class PedidoServiceImpl implements PedidoService {
     public PedidoDetalleDTO obtenerPedidoPorId(Long id) {
         //Validamos si el pedido con el id enviado como parametro existe en la base de datos
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("El pedido con el id " + id  + " no existe")
+                () -> new PedidoNotFoundException(id)
         );
 
         //Regresamos el pedido encontrado en la base de datos en su formato detalleDTO
@@ -48,7 +50,7 @@ public class PedidoServiceImpl implements PedidoService {
     public Page<PedidoResumenDTO> obtenerPedidosPorUsuarioId(Long idUsuario, Pageable pagina) {
         //Validamos si el usuario con el id enviado como parametro, existe en la base de datos
         Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow(
-                () -> new RuntimeException("El usuario con el id " + idUsuario + " no existe")
+                () -> new UsuarioNotFoundException(idUsuario)
         );
 
         //Regresamos la pagina de pedidos encontrados del usuario con el id enviado como parametro
@@ -65,7 +67,7 @@ public class PedidoServiceImpl implements PedidoService {
     public PedidoResponseDTO actualizarEstado(Long id, EstadoPedido nuevoEstado) {
         //Obtenemos el pedido con el id enviado como argumento
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("El pedido con el id " + id + " no existe")
+                () -> new PedidoNotFoundException(id)
         );
 
         //Actualizamos su estado por el enviado como argumento

@@ -8,6 +8,8 @@ import com.spring.eccomerce.entity.DetallePedido;
 import com.spring.eccomerce.entity.Pedido;
 import com.spring.eccomerce.entity.Producto;
 import com.spring.eccomerce.entity.enums.EstadoPedido;
+import com.spring.eccomerce.exception.CarritoVacioException;
+import com.spring.eccomerce.exception.StockInsuficienteException;
 import com.spring.eccomerce.mapper.PedidoMapper;
 import com.spring.eccomerce.repository.PedidoRepository;
 import com.spring.eccomerce.repository.ProductoRepository;
@@ -15,7 +17,6 @@ import com.spring.eccomerce.service.CarritoService;
 import com.spring.eccomerce.service.CheckoutService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,7 +44,6 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    @SneakyThrows
     //Usamos una transaccion para asegurar que todas las operaciones en la base de datos se hagan juntas o si no ninguna se haga
     @Transactional
     public PedidoResponseDTO confirmarCompra(CheckoutDTO checkoutDTO) {
@@ -53,7 +53,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         //Validamos si el carrito de la sesion contiene elementos
         if(carrito.getItems().isEmpty()){
             //Si esta vacio, avisamos para no ejecutar el resto de la logica
-            throw new Exception("El carrito de la sesion no contiene ningun item");
+            throw new CarritoVacioException();
         }
 
         //Obtenemos los productos del carrito
@@ -65,7 +65,7 @@ public class CheckoutServiceImpl implements CheckoutService {
             //Si las existencias del item del carrito son mayores a las existencias del producto
             if(item.getCantidad() > productos.get(item.getIdProducto()).getExistencia()){
                 //Avisamos que las existencias del item se agotaron y por ello no se puede realizar la compra
-                throw new Exception("El producto con id " + item.getIdProducto() + " ya no tiene existencias suficientes");
+                throw new StockInsuficienteException(item.getIdProducto());
             }
         }
 

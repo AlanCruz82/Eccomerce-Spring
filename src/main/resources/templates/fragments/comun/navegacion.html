@@ -16,7 +16,7 @@
             </li>
 
             <li class="breadcrumb-item">
-                <a th:href="@{/${#strings.toLowerCase(seccion)}}"
+                <a th:href="@{|/${#strings.toLowerCase(seccion)}|}"
                    th:text="${seccion}">
                 </a>
 
