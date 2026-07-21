@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout/header :: header('Pedido confirmado')}"></head>
+
+<body class="bg-light">
+
+<header th:replace="~{fragments/layout/navbar :: navbar}"></header>
+
+<main class="container py-5">
+
+    <!-- Barra de navegacion -->
+    <div th:replace="~{fragments/comun/barra_navegacion ::
+            navegacion(
+                'Productos',
+                'Pedido confirmado'
+            )}">
+    </div>
+
+    <!-- Mensaje principal -->
+    <div class="text-center my-5">
+
+        <div class="display-1 text-success mb-3">
+            ✓
+        </div>
+
+        <h1 class="fw-bold">
+            ¡Gracias por tu compra!
+        </h1>
+
+        <p class="lead text-muted">
+            Tu pedido fue registrado correctamente.
+        </p>
+
+        <h3 class="mt-4">
+
+            Pedido #
+
+            <span
+                    th:text="${pedido.id}">
+            </span>
+
+        </h3>
+
+    </div>
+
+    <!-- Resumen -->
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div
+                    th:replace="~{fragments/pedido/resumen ::
+                    resumen(${pedido})}">
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Dirección -->
+    <div class="row justify-content-center mt-4">
+
+        <div class="col-lg-8">
+
+            <div
+                    th:replace="~{fragments/pedido/direccion ::
+                    direccion(${pedido.direccionEnvio})}">
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Acciones -->
+    <div class="d-flex
+                justify-content-center
+                gap-3
+                mt-5">
+
+        <a class="btn btn-primary btn-lg"
+           th:href="@{/pedidos/{id}(id=${pedido.id})}">
+
+            Ver detalle
+
+        </a>
+
+        <a class="btn btn-outline-primary btn-lg"
+           th:href="@{/productos}">
+
+            Seguir comprando
+
+        </a>
+
+    </div>
+
+</main>
+
+<footer th:replace="~{fragments/layout/footer :: footer}"></footer>
+
+</body>
+
+</html>

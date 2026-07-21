@@ -1,6 +1,8 @@
 package com.spring.eccomerce.mapper;
 
+import com.spring.eccomerce.dto.pedido.PedidoDetalleDTO;
 import com.spring.eccomerce.dto.pedido.PedidoResponseDTO;
+import com.spring.eccomerce.dto.pedido.PedidoResumenDTO;
 import com.spring.eccomerce.entity.Pedido;
 import org.springframework.stereotype.Component;
 
@@ -8,9 +10,11 @@ import org.springframework.stereotype.Component;
 public class PedidoMapper {
 
     private final UsuarioMapper usuarioMapper;
+    private final DetallePedidoMapper detallePedidoMapper;
 
-    public PedidoMapper(UsuarioMapper usuarioMapper) {
+    public PedidoMapper(UsuarioMapper usuarioMapper, DetallePedidoMapper detallePedidoMapper) {
         this.usuarioMapper = usuarioMapper;
+        this.detallePedidoMapper = detallePedidoMapper;
     }
 
     public PedidoResponseDTO toDTO(Pedido pedido){
@@ -28,6 +32,26 @@ public class PedidoMapper {
                 .build();
     }
 
-    //NO existe un mapper para convertir a un dto a una entidad de pedido, ya que el pedido se va a generar manualmente
-    //en el servicio, al no poder contar con los elementos suficientes para poder generarlo aqui
+    public PedidoResumenDTO toResumenDTO(Pedido pedido){
+        return PedidoResumenDTO.builder()
+                .id(pedido.getId())
+                .estado(pedido.getEstadoPedido())
+                .total(pedido.getImporteTotal())
+                .fechaActualizacion(pedido.getFechaActualizacion())
+                .build();
+    }
+
+    public PedidoDetalleDTO toDetalleDTO(Pedido pedido){
+        return PedidoDetalleDTO.builder()
+                .id(pedido.getId())
+                .estado(pedido.getEstadoPedido())
+                .total(pedido.getImporteTotal())
+                .direccionEnvio(pedido.getDireccionEnvio())
+                .detalles(pedido.getDetalles().stream().map(detallePedidoMapper::toDTO).toList())
+                .fechaActualizacion(pedido.getFechaActualizacion())
+                .build();
+    }
+
+    //NO existe un mapper para convertir un dto a una entidad de pedido, ya que el pedido se va a generar manualmente
+    //en el servicio del checkout, posterior a la compra del carrito
 }

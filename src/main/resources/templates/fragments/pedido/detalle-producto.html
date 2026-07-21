@@ -1,0 +1,67 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="detalle(detalle)">
+    <div class="card shadow-sm mb-3">
+
+        <div class="row g-0">
+
+            <div class="col-md-2">
+
+                <img
+
+                        class="img-fluid rounded-start"
+
+                        th:src="@{${detalle.producto.urlImagen}}"
+
+                        th:alt="${detalle.producto.nombre}">
+
+            </div>
+
+            <div class="col-md-10">
+
+                <div class="card-body">
+
+                    <h5
+
+                            th:text="${detalle.producto.nombre}">
+                    </h5>
+
+                    <p>
+
+                        Precio:
+
+                        <span
+
+                                th:text="${detalle.precioUnitario}">
+                        </span>
+
+                    </p>
+
+                    <p>
+
+                        Cantidad:
+
+                        <strong
+                                th:text="${detalle.cantidad}">
+                        </strong>
+
+                    </p>
+
+                    <h5
+                            class="text-success">
+
+                        Subtotal:
+
+                        <span
+
+                                th:text="${detalle.subtotal}">
+                        </span>
+
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

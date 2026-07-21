@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout/header :: header('Mis pedidos')}"></head>
+
+<body class="bg-light">
+
+<header th:replace="~{fragments/layout/navbar :: navbar}"></header>
+
+<main class="container py-5">
+
+    <div th:replace="~{fragments/comun/barra_navegacion ::
+            navegacion(
+                'Pedidos',
+                'Mis pedidos'
+            )}">
+    </div>
+
+    <div class="mb-5">
+        <h1 class="fw-bold">Mis pedidos</h1>
+        <p class="text-muted">Historial de tus compras realizadas.</p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th class="text-end">Total</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="pedido : ${pedidos.content}">
+                            <td>
+                                <a th:href="@{/pedidos/{id}(id=${pedido.id})}"
+                                   class="fw-bold text-decoration-none">
+                                    #<span th:text="${pedido.id}"></span>
+                                </a>
+                            </td>
+                            <td th:text="${#temporals.format(pedido.fechaActualizacion, 'dd/MM/yyyy HH:mm')}"></td>
+                            <td>
+                                <div th:replace="~{fragments/pedido/estado :: estado(${pedido.estado})}"></div>
+                            </td>
+                            <td class="text-end fw-bold">
+                                $<span th:text="${pedido.total}"></span>
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary"
+                                   th:href="@{/pedidos/{id}(id=${pedido.id})}">
+                                    Ver detalle
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${pedidos.content.isEmpty()}">
+                            <td colspan="5" class="text-center py-5">
+                                <p class="text-muted mb-0">No tienes pedidos registrados.</p>
+                                <a th:href="@{/productos}" class="btn btn-primary mt-3">
+                                    Ir a comprar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <nav th:if="${pedidos.totalPages > 0}" class="mt-4" aria-label="Paginación de pedidos">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item" th:classappend="${pedidos.first} ? 'disabled'">
+                <a class="page-link" th:href="@{/pedidos(pagina=${pedidos.number - 1})}"
+                   aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, pedidos.totalPages - 1)}"
+                th:classappend="${i == pedidos.number} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/pedidos(pagina=${i})}"
+                   th:text="${i + 1}"></a>
+            </li>
+
+            <li class="page-item" th:classappend="${pedidos.last} ? 'disabled'">
+                <a class="page-link" th:href="@{/pedidos(pagina=${pedidos.number + 1})}"
+                   aria-label="Siguiente">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+</main>
+
+<footer th:replace="~{fragments/layout/footer :: footer}"></footer>
+
+</body>
+</html>

@@ -6,5 +6,5 @@ import com.spring.eccomerce.dto.pedido.PedidoResponseDTO;
 public interface CheckoutService {
 
     public CheckoutDTO obtenerFormulario();
-    PedidoResponseDTO confirmarCompra(CheckoutDTO checkoutDTO);
+    public PedidoResponseDTO confirmarCompra(CheckoutDTO checkoutDTO);
 }

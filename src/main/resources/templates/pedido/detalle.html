@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout/header :: header('Detalle del pedido')}"></head>
+
+<body class="bg-light">
+
+<header th:replace="~{fragments/layout/navbar :: navbar}"></header>
+
+<main class="container py-5">
+
+    <!-- Barra de nevagacion -->
+    <div th:replace="~{fragments/comun/barra_navegacion ::
+            navegacion(
+                'Pedidos',
+                'Pedido confirmado'
+            )}">
+    </div>
+
+    <!-- Mensaje principal -->
+    <div class="mb-5">
+
+        <h1 class="fw-bold">
+
+            Pedido #
+
+            <span
+                    th:text="${pedido.id}">
+            </span>
+
+        </h1>
+
+        <p class="text-muted">
+
+            Consulta toda la información relacionada con tu compra.
+
+        </p>
+
+    </div>
+
+    <!-- Contenido  -->
+    <div class="row g-4">
+
+        <!-- Productos -->
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-white">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h4 class="mb-0">
+
+                            Productos
+
+                        </h4>
+
+                        <span class="badge bg-primary rounded-pill"
+                              th:text="${pedido.detalles.size()} + ' artículo(s)'">
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div th:each="detalle : ${pedido.detalles}">
+
+                        <div
+                                th:replace="~{fragments/pedido/detalle-producto :: detalle(${detalle})}">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--Sidebar-->
+        <div class="col-lg-4">
+
+            <!-- Resumen -->
+            <div class="mb-4"
+                 th:replace="~{fragments/pedido/resumen :: resumen(${pedido})}">
+            </div>
+
+            <!-- Dirección -->
+            <div class="mb-4"
+                 th:replace="~{fragments/pedido/direccion :: direccion(${pedido.direccionEnvio})}">
+            </div>
+
+            <!-- Total -->
+            <div class="card shadow-sm border-success">
+
+                <div class="card-header bg-success text-white">
+
+                    <h5 class="mb-0">
+
+                        Resumen del pago
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+
+                            Productos
+
+                        </span>
+
+                        <strong
+                                th:text="${pedido.detalles.size()}">
+                        </strong>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+
+                            Estado
+
+                        </span>
+
+                        <div
+                                th:replace="~{fragments/pedido/estado :: estado(${pedido.estado})}">
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h4 class="mb-0">
+
+                            Total
+
+                        </h4>
+
+                        <h3 class="text-success mb-0">
+
+                            <span
+                                    th:text="${pedido.total}">
+                            </span>
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Botones -->
+    <div class="d-flex justify-content-between mt-5">
+
+        <a class="btn btn-outline-secondary"
+           th:href="@{/pedidos}">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Volver a mis pedidos
+
+        </a>
+
+        <a class="btn btn-primary"
+           th:href="@{/productos}">
+
+            Seguir comprando
+
+            <i class="bi bi-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+</main>
+
+<footer th:replace="~{fragments/layout/footer :: footer}"></footer>
+
+</body>
+
+</html>

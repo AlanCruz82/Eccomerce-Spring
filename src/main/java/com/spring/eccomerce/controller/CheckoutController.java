@@ -1,12 +1,15 @@
 package com.spring.eccomerce.controller;
 
 import com.spring.eccomerce.dto.checkout.CheckoutDTO;
+import com.spring.eccomerce.dto.pedido.PedidoResponseDTO;
 import com.spring.eccomerce.service.CarritoService;
 import com.spring.eccomerce.service.CheckoutService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -35,8 +38,8 @@ public class CheckoutController {
     }
 
     @PostMapping
-    public String procesarCompra(CheckoutDTO checkoutDTO){
-        checkoutService.confirmarCompra(checkoutDTO);
-        return "redirect:/productos";
+    public String procesarCompra(@Valid @ModelAttribute CheckoutDTO checkoutDTO){
+        PedidoResponseDTO pedido = checkoutService.confirmarCompra(checkoutDTO);
+        return "redirect:/pedidos/" + pedido.getId() + "/confirmacion";
     }
 }

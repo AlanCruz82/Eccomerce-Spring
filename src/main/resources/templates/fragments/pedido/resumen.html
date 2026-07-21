@@ -1,0 +1,44 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="resumen(pedido)">
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <h5>
+                Pedido #<span th:text="${pedido.id}"></span>
+            </h5>
+
+            <hr>
+
+            <p>
+                <strong>Fecha:</strong>
+
+                <span
+                        th:text="${#temporals.format(
+                    pedido.fechaActualizacion,
+                    'dd/MM/yyyy HH:mm')}">
+                </span>
+
+            </p>
+
+            <div
+                    th:replace="~{
+            fragments/pedido/estado ::
+            estado(${pedido.estado})}">
+            </div>
+
+            <hr>
+
+            <h4
+                    class="text-success">
+
+                $
+                <span
+                        th:text="${pedido.total}">
+                </span>
+
+            </h4>
+
+        </div>
+
+    </div>
+</div>

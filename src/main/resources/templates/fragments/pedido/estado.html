@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="estado(estado)">
+
+    <span
+            th:switch="${#strings.toString(estado)}"
+            class="badge rounded-pill fs-6">
+
+        <span th:case="'PENDIENTE'"
+              class="badge bg-warning text-dark">
+            Pendiente
+        </span>
+
+        <span th:case="'PAGADO'"
+              class="badge bg-primary">
+            Pagado
+        </span>
+
+        <span th:case="'ENTREGADO'"
+              class="badge bg-success">
+            Entregado
+        </span>
+
+        <span th:case="'CANCELADO'"
+              class="badge bg-danger">
+            Cancelado
+        </span>
+
+    </span>
+
+</th:block>
+
+</html>
