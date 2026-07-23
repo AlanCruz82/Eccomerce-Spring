@@ -59,20 +59,24 @@ public class CategoriaServiceImpl implements CategoriaService {
         categoriaRepository.deleteById(id);
     }
 
-    /*
     @Override
-    @SneakyThrows
     public CategoriaResponseDTO obtenerCategoriaPorId(Long id) {
-        //Verificamos si la categoria a obtener existe en la base de datos
-        Categoria categoriaId = categoriaRepository.findById(id).orElseThrow(
-                () -> new Exception("La categoria con el id" + id + " no existe")
+        Categoria categoria = categoriaRepository.findById(id).orElseThrow(
+                () -> new CategoriaNotFoundException(id)
         );
-
-        return categoriaMapper.toDTO(categoriaId);
-    }*/
+        return categoriaMapper.toDTO(categoria);
+    }
 
     @Override
     public List<CategoriaResumenDTO> obtenerCategorias() {
         return categoriaRepository.findAll().stream().map(categoriaMapper::toResumenDTO).toList();
+    }
+
+    @Override
+    public List<CategoriaResumenDTO> obtenerTop4Categorias() {
+        return categoriaRepository.findTop4ByOrderByNombreDesc()
+                .stream()
+                .map(categoriaMapper::toResumenDTO)
+                .toList();
     }
 }

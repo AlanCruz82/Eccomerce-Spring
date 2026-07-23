@@ -4,6 +4,7 @@ import com.spring.eccomerce.dto.producto.ProductoResumenDTO;
 import com.spring.eccomerce.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

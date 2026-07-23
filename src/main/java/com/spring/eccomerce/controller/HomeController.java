@@ -19,7 +19,7 @@ public class HomeController {
     @GetMapping("/")
     public String inicio(Model model) {
 
-        model.addAttribute("categorias", categoriaService.obtenerCategorias());
+        model.addAttribute("categorias", categoriaService.obtenerTop4Categorias());
 
         model.addAttribute("productosDestacados", productoService.obtenerProductosDestacados());
 
