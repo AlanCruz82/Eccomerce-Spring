@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CategoriaNotFoundException.class)
     public String handleCategoriaNotFound(CategoriaNotFoundException ex, RedirectAttributes ra) {
         ra.addFlashAttribute("error", ex.getMessage());
-        return "redirect:/productos";
+        return "redirect:/categorias";
     }
 
     @ExceptionHandler(UsuarioNotFoundException.class)
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CategoriaDuplicadaException.class)
     public String handleCategoriaDuplicada(CategoriaDuplicadaException ex, RedirectAttributes ra) {
         ra.addFlashAttribute("error", ex.getMessage());
-        return "redirect:/productos";
+        return "redirect:/categorias";
     }
 
     @ExceptionHandler(StockInsuficienteException.class)

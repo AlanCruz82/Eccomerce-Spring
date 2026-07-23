@@ -34,10 +34,7 @@ public class CategoriaController {
 
     @GetMapping("/{id}/editar")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
-        CategoriaResponseDTO categoria = categoriaService.obtenerCategoriaPorId(id);
-        CategoriaRequestDTO dto = new CategoriaRequestDTO();
-        dto.setNombre(categoria.getNombre());
-        model.addAttribute("categoria", dto);
+        model.addAttribute("categoria", categoriaService.obtenerCategoriaEditar(id));
         model.addAttribute("categoriaId", id);
         return "categoria/formulario";
     }

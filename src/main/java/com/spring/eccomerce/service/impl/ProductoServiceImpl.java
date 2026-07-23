@@ -120,4 +120,13 @@ public class ProductoServiceImpl implements ProductoService {
         //Eliminamos el producto con el id enviado como argumento
         productoRepository.deleteById(id);
     }
+
+    @Override
+    public ProductoRequestDTO obtenerProductoEditar(Long id){
+        //Obtenemos el producto que se quiere editar por el id enviado como argumento
+        ProductoDetalleDTO productoEditar = obtenerProductoPorId(id);
+
+        //Regresamos el producto que se quiere editar en el formato de requestDTO
+        return productoMapper.toRequestDTO(productoEditar);
+    }
 }

@@ -70,4 +70,21 @@ public class ProductoMapper {
                 .categoria(categoriaMapper.toResumenDTO(producto.getCategoria()))
                 .build();
     }
+
+    //Caso de uso: al editar un producto que ya existe en la base de datos
+    public ProductoRequestDTO toRequestDTO(ProductoDetalleDTO detalleDTO){
+        //Generamos el productoRequest, que va a contener los datos del producto que ya esta almacenado en la base de datos
+        ProductoRequestDTO requestDTO = new  ProductoRequestDTO();
+
+        //Establecemos la informacion del productoRequest en base a la informacion del producto almacenado
+        requestDTO.setNombre(detalleDTO.getNombre());
+        requestDTO.setDescripcion(detalleDTO.getDescripcion());
+        requestDTO.setPrecio(detalleDTO.getPrecio());
+        requestDTO.setExistencia(detalleDTO.getExistencia());
+        requestDTO.setUrlImagen(detalleDTO.getUrlImagen());
+        requestDTO.setIdCategoria(detalleDTO.getCategoria().getId());
+
+        //Regresamos el productoRequestDTO generado con los datos del producto
+        return requestDTO;
+    }
 }

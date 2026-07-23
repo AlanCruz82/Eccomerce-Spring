@@ -14,4 +14,5 @@ public interface CategoriaService {
     public List<CategoriaResumenDTO> obtenerCategorias();
     public List<CategoriaResumenDTO> obtenerTop4Categorias();
     public CategoriaResponseDTO obtenerCategoriaPorId(Long id);
+    public CategoriaRequestDTO obtenerCategoriaEditar(Long id);
 }

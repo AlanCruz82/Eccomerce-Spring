@@ -30,4 +30,15 @@ public class CategoriaMapper {
                 .nombre(categoria.getNombre())
                 .build();
     }
+
+    public CategoriaRequestDTO toRequestDTO(CategoriaResponseDTO responseDTO){
+        //Generamos la CategoriaRequest, que va a almacenar la informacion de la categoria que ya existe en la base de datos
+        CategoriaRequestDTO requestDTO = new CategoriaRequestDTO();
+
+        //Establecemos la informacion de la categoria
+        requestDTO.setNombre(responseDTO.getNombre());
+
+        //Regresamos la categoriaRequest generada
+        return requestDTO;
+    }
 }

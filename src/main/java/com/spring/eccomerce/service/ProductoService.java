@@ -15,4 +15,5 @@ public interface ProductoService {
     public ProductoResumenDTO actualizarProducto(Long id, ProductoRequestDTO productoActualizar);
     public List<ProductoResumenDTO> obtenerProductosDestacados();
     public void eliminarProducto(Long id);
+    public ProductoRequestDTO obtenerProductoEditar(Long id);
 }

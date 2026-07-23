@@ -79,4 +79,13 @@ public class CategoriaServiceImpl implements CategoriaService {
                 .map(categoriaMapper::toResumenDTO)
                 .toList();
     }
+
+    @Override
+    public CategoriaRequestDTO obtenerCategoriaEditar(Long id) {
+        //Obtenemos la categoria con el id de categoria enviado como argumento
+        CategoriaResponseDTO categoriaEditar = obtenerCategoriaPorId(id);
+
+        //Regresamos la categoria que va a editar en su formato requestDTO
+        return categoriaMapper.toRequestDTO(categoriaEditar);
+    }
 }

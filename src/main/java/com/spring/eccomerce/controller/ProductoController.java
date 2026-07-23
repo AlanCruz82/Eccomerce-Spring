@@ -54,15 +54,7 @@ public class ProductoController {
 
     @GetMapping("/{id}/editar")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
-        ProductoDetalleDTO response = productoService.obtenerProductoPorId(id);
-        ProductoRequestDTO requestDTO = new ProductoRequestDTO();
-        requestDTO.setNombre(response.getNombre());
-        requestDTO.setDescripcion(response.getDescripcion());
-        requestDTO.setPrecio(response.getPrecio());
-        requestDTO.setExistencia(response.getExistencia());
-        requestDTO.setUrlImagen(response.getUrlImagen());
-        requestDTO.setIdCategoria(response.getCategoria().getId());
-        model.addAttribute("producto", requestDTO);
+        model.addAttribute("producto", productoService.obtenerProductoEditar(id));
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
         model.addAttribute("productoId", id);
         return "producto/formulario";
