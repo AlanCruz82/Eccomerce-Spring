@@ -64,6 +64,7 @@ public class ProductoController {
         requestDTO.setIdCategoria(response.getCategoria().getId());
         model.addAttribute("producto", requestDTO);
         model.addAttribute("categorias", categoriaService.obtenerCategorias());
+        model.addAttribute("productoId", id);
         return "producto/formulario";
     }
 
