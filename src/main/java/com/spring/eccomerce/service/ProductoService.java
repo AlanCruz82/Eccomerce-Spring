@@ -9,11 +9,11 @@ import java.util.List;
 public interface ProductoService {
 
     //Metodo unico que va a implementar los filtros definidos (categoria/nombre/precioMinimo/precioMaximo)
-    public Page<ProductoResumenDTO> obtenerProductos(ProductoFiltroDTO filtroDTO, Pageable pagina);
-    public ProductoDetalleDTO obtenerProductoPorId(Long id);
-    public ProductoResumenDTO crearProducto(ProductoRequestDTO producto);
-    public ProductoResumenDTO actualizarProducto(Long id, ProductoRequestDTO productoActualizar);
-    public List<ProductoResumenDTO> obtenerProductosDestacados();
-    public void eliminarProducto(Long id);
-    public ProductoRequestDTO obtenerProductoEditar(Long id);
+    Page<ProductoResumenDTO> obtenerProductos(ProductoFiltroDTO filtroDTO, Pageable pagina);
+    ProductoDetalleDTO obtenerProductoPorId(Long id);
+    ProductoResumenDTO crearProducto(ProductoRequestDTO producto);
+    void actualizarProducto(Long id, ProductoRequestDTO productoActualizar);
+    List<ProductoResumenDTO> obtenerProductosDestacados();
+    void eliminarProducto(Long id);
+    ProductoRequestDTO obtenerProductoEditar(Long id);
 }

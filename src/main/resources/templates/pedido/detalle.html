@@ -94,6 +94,32 @@
                  th:replace="~{fragments/pedido/direccion :: direccion(${pedido.direccionEnvio})}">
             </div>
 
+            <!-- Actualizar estado -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-arrow-repeat"></i> Cambiar estado
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post"
+                          th:action="@{/pedidos/{id}/estado/placeholder(id=${pedido.id})}"
+                          onsubmit="return cambiarEstado(this)">
+                        <div class="mb-2">
+                            <select id="estadoSelect" class="form-select">
+                                <option th:each="e : ${T(com.spring.eccomerce.entity.enums.EstadoPedido).values()}"
+                                        th:value="${e.name()}"
+                                        th:text="${e.name()}"
+                                        th:selected="${e == pedido.estado}"></option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="bi bi-check-lg"></i> Actualizar estado
+                        </button>
+                    </form>
+                </div>
+            </div>
+
             <!-- Total -->
             <div class="card shadow-sm border-success">
 
@@ -191,6 +217,15 @@
     </div>
 
 </main>
+
+<script th:inline="javascript">
+    function cambiarEstado(form) {
+        const estado = document.getElementById('estadoSelect').value;
+        const id = [[${pedido.id}]];
+        form.action = '/pedidos/' + id + '/estado/' + estado;
+        return true;
+    }
+</script>
 
 <footer th:replace="~{fragments/layout/footer :: footer}"></footer>
 

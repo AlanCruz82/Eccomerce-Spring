@@ -78,7 +78,7 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public ProductoResumenDTO actualizarProducto(Long id, ProductoRequestDTO productoActualizar) {
+    public void actualizarProducto(Long id, ProductoRequestDTO productoActualizar) {
         //Verificamos si el producto enviado como id existe en la base de datos
         Producto productoActualizado = productoRepository.findById(id).orElseThrow(
                 () -> new ProductoNotFoundException(id)
@@ -100,7 +100,7 @@ public class ProductoServiceImpl implements ProductoService {
         productoActualizado.setCategoria(categoria);
 
         //Actualizamos el producto en la base de datos y regresamos el producto en resumenDTO
-        return productoMapper.toResumenDTO(productoRepository.save(productoActualizado));
+        productoMapper.toResumenDTO(productoRepository.save(productoActualizado));
 
     }
 

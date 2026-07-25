@@ -1,5 +1,6 @@
 package com.spring.eccomerce.service.impl;
 
+import com.spring.eccomerce.dto.categoria.CategoriaConCantidadDTO;
 import com.spring.eccomerce.dto.categoria.CategoriaRequestDTO;
 import com.spring.eccomerce.dto.categoria.CategoriaResponseDTO;
 import com.spring.eccomerce.dto.categoria.CategoriaResumenDTO;
@@ -8,6 +9,7 @@ import com.spring.eccomerce.exception.CategoriaDuplicadaException;
 import com.spring.eccomerce.exception.CategoriaNotFoundException;
 import com.spring.eccomerce.mapper.CategoriaMapper;
 import com.spring.eccomerce.repository.CategoriaRepository;
+import com.spring.eccomerce.repository.ProductoRepository;
 import com.spring.eccomerce.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public class CategoriaServiceImpl implements CategoriaService {
     private final CategoriaRepository categoriaRepository;
     //Dependencia para la construir de dtos-entidades
     private final CategoriaMapper categoriaMapper;
+    //Dependencia para consultar el top de categorias con mas productos
+    private final ProductoRepository productoRepository;
 
     @Override
     public CategoriaResponseDTO crearCategoria(CategoriaRequestDTO nuevaCategoria) {
@@ -73,10 +77,13 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public List<CategoriaResumenDTO> obtenerTop4Categorias() {
-        return categoriaRepository.findTop4ByOrderByNombreDesc()
-                .stream()
-                .map(categoriaMapper::toResumenDTO)
+    public List<CategoriaConCantidadDTO> obtenerTop4CategoriasConMasProductos() {
+        return productoRepository.findTop4CategoriasConMasProductos().stream()
+                .map(p -> CategoriaConCantidadDTO.builder()
+                        .id(p.getId())
+                        .nombre(p.getNombre())
+                        .cantidad(p.getCantidad())
+                        .build())
                 .toList();
     }
 

@@ -1,5 +1,6 @@
 package com.spring.eccomerce.service;
 
+import com.spring.eccomerce.dto.categoria.CategoriaConCantidadDTO;
 import com.spring.eccomerce.dto.categoria.CategoriaRequestDTO;
 import com.spring.eccomerce.dto.categoria.CategoriaResponseDTO;
 import com.spring.eccomerce.dto.categoria.CategoriaResumenDTO;
@@ -8,11 +9,11 @@ import java.util.List;
 
 public interface CategoriaService {
 
-    public CategoriaResponseDTO crearCategoria(CategoriaRequestDTO nuevaCategoria);
-    public CategoriaResponseDTO actualizarCategoria(Long id, CategoriaRequestDTO nuevaCategoria);
-    public void eliminarCategoria(Long id);
-    public List<CategoriaResumenDTO> obtenerCategorias();
-    public List<CategoriaResumenDTO> obtenerTop4Categorias();
-    public CategoriaResponseDTO obtenerCategoriaPorId(Long id);
-    public CategoriaRequestDTO obtenerCategoriaEditar(Long id);
+    CategoriaResponseDTO crearCategoria(CategoriaRequestDTO nuevaCategoria);
+    CategoriaResponseDTO actualizarCategoria(Long id, CategoriaRequestDTO nuevaCategoria);
+    void eliminarCategoria(Long id);
+    List<CategoriaResumenDTO> obtenerCategorias();
+    CategoriaResponseDTO obtenerCategoriaPorId(Long id);
+    CategoriaRequestDTO obtenerCategoriaEditar(Long id);
+    List<CategoriaConCantidadDTO> obtenerTop4CategoriasConMasProductos();
 }

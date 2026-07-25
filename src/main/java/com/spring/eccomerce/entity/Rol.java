@@ -1,5 +1,6 @@
 package com.spring.eccomerce.entity;
 
+import com.spring.eccomerce.entity.enums.NombreRol;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +20,9 @@ public class Rol {
     @Column(name = "id_rol")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String nombre;
+    private NombreRol nombre;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "roles_permisos", joinColumns = @JoinColumn(name = "id_rol"),

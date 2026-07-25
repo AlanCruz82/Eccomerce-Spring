@@ -1,5 +1,6 @@
 package com.spring.eccomerce.controller;
 
+import com.spring.eccomerce.dto.categoria.CategoriaConCantidadDTO;
 import com.spring.eccomerce.service.CategoriaService;
 import com.spring.eccomerce.service.ProductoService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class HomeController {
     @GetMapping("/")
     public String inicio(Model model) {
 
-        model.addAttribute("categorias", categoriaService.obtenerTop4Categorias());
+        model.addAttribute("categoriasPopulares", categoriaService.obtenerTop4CategoriasConMasProductos());
 
         model.addAttribute("productosDestacados", productoService.obtenerProductosDestacados());
 

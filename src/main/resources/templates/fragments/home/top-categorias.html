@@ -1,0 +1,52 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="top-categorias">
+
+    <section class="mb-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h2>
+                <i class="bi bi-star-fill text-warning"></i>
+                Categorías populares
+            </h2>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div
+                    class="col-12 col-md-6 col-lg-3"
+                    th:each="cat : ${categoriasPopulares}">
+
+                <div class="card h-100 shadow-sm product-card">
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-grid display-5 text-primary"></i>
+
+                        <h5 class="mt-3" th:text="${cat.nombre}"></h5>
+
+                        <span class="badge bg-primary rounded-pill fs-6 mt-2"
+                              th:text="${cat.cantidad} + ' producto(s)'"></span>
+
+                    </div>
+
+                    <div class="card-footer bg-white border-0">
+
+                        <a th:href="@{/productos(categoriaId=${cat.id})}"
+                           class="btn btn-outline-primary w-100">
+
+                            Ver productos
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
