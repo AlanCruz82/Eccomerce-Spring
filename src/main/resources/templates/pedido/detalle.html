@@ -103,10 +103,9 @@
                 </div>
                 <div class="card-body">
                     <form method="post"
-                          th:action="@{/pedidos/{id}/estado/placeholder(id=${pedido.id})}"
-                          onsubmit="return cambiarEstado(this)">
+                          th:action="@{/admin/pedidos/{id}/estado(id=${pedido.id})}">
                         <div class="mb-2">
-                            <select id="estadoSelect" class="form-select">
+                            <select name="estado" class="form-select">
                                 <option th:each="e : ${T(com.spring.eccomerce.entity.enums.EstadoPedido).values()}"
                                         th:value="${e.name()}"
                                         th:text="${e.name()}"
@@ -217,15 +216,6 @@
     </div>
 
 </main>
-
-<script th:inline="javascript">
-    function cambiarEstado(form) {
-        const estado = document.getElementById('estadoSelect').value;
-        const id = [[${pedido.id}]];
-        form.action = '/pedidos/' + id + '/estado/' + estado;
-        return true;
-    }
-</script>
 
 <footer th:replace="~{fragments/layout/footer :: footer}"></footer>
 

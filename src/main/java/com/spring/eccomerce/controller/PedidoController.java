@@ -54,12 +54,6 @@ public class PedidoController {
         return "pedido/lista";
     }
 
-    @PostMapping("/{id}/estado/{estado}")
-    public String actualizarEstado(@PathVariable Long id, @PathVariable EstadoPedido estado) {
-        pedidoService.actualizarEstado(id, estado);
-        return "redirect:/pedidos/" + id;
-    }
-
     @GetMapping("/{estado}/estado")
     public String mostrarPedidosPorEstado(@PathVariable EstadoPedido estado,
                                            @RequestParam(defaultValue = "0") int pagina,
