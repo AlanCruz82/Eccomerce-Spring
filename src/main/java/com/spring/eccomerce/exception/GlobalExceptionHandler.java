@@ -55,6 +55,18 @@ public class GlobalExceptionHandler {
         return "redirect:/carrito";
     }
 
+    @ExceptionHandler(UsuarioDuplicadoException.class)
+    public String handleUsuarioDuplicado(Exception ex, RedirectAttributes ra) {
+        ra.addFlashAttribute("error", ex.getMessage());
+        return "redirect:/registro";
+    }
+
+    @ExceptionHandler(RolNotFoundException.class)
+    public String handleRolNotFound(Exception ex, RedirectAttributes ra) {
+        ra.addFlashAttribute("error", ex.getMessage());
+        return "redirect:/registro";
+    }
+
     @ExceptionHandler(Exception.class)
     public String handleGeneral(Exception ex, RedirectAttributes ra) {
         ra.addFlashAttribute("error", "Ocurrió un error inesperado");

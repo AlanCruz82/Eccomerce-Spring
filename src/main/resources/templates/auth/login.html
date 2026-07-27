@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout/header :: header('Iniciar sesión')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/layout/navbar :: navbar}"></div>
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div th:replace="~{fragments/comun/mensaje-error :: mensaje-error}"></div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white text-center py-3">
+                    <h4 class="mb-0">Iniciar sesión</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <div th:if="${param.registro != null}"
+                         class="alert alert-success text-center">
+                        Registro exitoso. Inicia sesión con tus credenciales.
+                    </div>
+
+                    <div th:if="${param.error != null}"
+                         class="alert alert-danger text-center">
+                        Correo electrónico o contraseña incorrectos.
+                    </div>
+
+                    <div th:if="${param.logout != null}"
+                         class="alert alert-info text-center">
+                        Has cerrado sesión correctamente.
+                    </div>
+
+                    <form method="post" th:action="@{/login}">
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico</label>
+                            <input type="email" name="username" class="form-control" placeholder="correo@ejemplo.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" name="password" class="form-control" placeholder="********" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-box-arrow-in-right"></i> Entrar
+                        </button>
+                    </form>
+
+                    <p class="text-center mt-3 mb-0">
+                        ¿No tienes cuenta?
+                        <a th:href="@{/registro}">Regístrate</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout/footer :: footer}"></div>
+<div th:replace="~{fragments/layout/scripts :: scripts}"></div>
+
+</body>
+</html>

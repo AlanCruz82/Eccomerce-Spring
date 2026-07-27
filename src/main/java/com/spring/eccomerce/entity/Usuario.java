@@ -32,7 +32,7 @@ public class Usuario extends Bitacora {
     @Column(name = "direccion_envio", nullable = false, length = 150)
     private String direccionEnvio;
 
-    private Boolean activo = true;
+    private Boolean activo;
 
     //Carga perezosa, para no traer todos los roles de todos los usuarios al consultarlo
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

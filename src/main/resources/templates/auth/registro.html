@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout/header :: header('Crear cuenta')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/layout/navbar :: navbar}"></div>
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div th:replace="~{fragments/comun/mensaje-error :: mensaje-error}"></div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white text-center py-3">
+                    <h4 class="mb-0">Crear cuenta</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <form method="post" th:action="@{/registro}"
+                          th:object="${usuario}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" th:field="*{nombre}" class="form-control" placeholder="Tu nombre" required>
+                            <div th:if="${#fields.hasErrors('nombre')}" class="text-danger small"
+                                 th:errors="*{nombre}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico</label>
+                            <input type="email" th:field="*{correoElectronico}" class="form-control" placeholder="correo@ejemplo.com" required>
+                            <div th:if="${#fields.hasErrors('correoElectronico')}" class="text-danger small"
+                                 th:errors="*{correoElectronico}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" th:field="*{contrasena}" class="form-control" placeholder="Mínimo 8 caracteres" required>
+                            <div th:if="${#fields.hasErrors('contrasena')}" class="text-danger small"
+                                 th:errors="*{contrasena}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" th:field="*{telefono}" class="form-control" placeholder="5512345678" required>
+                            <div th:if="${#fields.hasErrors('telefono')}" class="text-danger small"
+                                 th:errors="*{telefono}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Dirección de envío</label>
+                            <input type="text" th:field="*{direccionEnvio}" class="form-control" placeholder="Calle, número, colonia" required>
+                            <div th:if="${#fields.hasErrors('direccionEnvio')}" class="text-danger small"
+                                 th:errors="*{direccionEnvio}"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-person-plus"></i> Crear cuenta
+                        </button>
+                    </form>
+
+                    <p class="text-center mt-3 mb-0">
+                        ¿Ya tienes cuenta?
+                        <a th:href="@{/login}">Inicia sesión</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout/footer :: footer}"></div>
+<div th:replace="~{fragments/layout/scripts :: scripts}"></div>
+
+</body>
+</html>

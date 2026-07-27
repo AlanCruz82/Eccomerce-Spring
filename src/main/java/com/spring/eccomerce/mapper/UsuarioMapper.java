@@ -38,6 +38,7 @@ public class UsuarioMapper {
                 .correoElectronico(dto.getCorreoElectronico())
                 .telefono(dto.getTelefono())
                 .direccionEnvio(dto.getDireccionEnvio())
+                .activo(true)
                 .build();
     }
 
