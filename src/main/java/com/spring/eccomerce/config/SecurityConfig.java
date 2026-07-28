@@ -28,6 +28,8 @@ public class SecurityConfig {
                                 "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/", "/productos", "/productos/**",
                                 "/categorias", "/carrito/**").permitAll()
+                        .requestMatchers("/pedidos").hasRole("ADMIN")
+                        .requestMatchers("/pedidos/usuario", "/pedidos/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

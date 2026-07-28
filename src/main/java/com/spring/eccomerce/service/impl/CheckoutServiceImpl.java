@@ -7,6 +7,7 @@ import com.spring.eccomerce.dto.pedido.PedidoResponseDTO;
 import com.spring.eccomerce.entity.DetallePedido;
 import com.spring.eccomerce.entity.Pedido;
 import com.spring.eccomerce.entity.Producto;
+import com.spring.eccomerce.entity.Usuario;
 import com.spring.eccomerce.entity.enums.EstadoPedido;
 import com.spring.eccomerce.exception.CarritoVacioException;
 import com.spring.eccomerce.exception.StockInsuficienteException;
@@ -15,8 +16,11 @@ import com.spring.eccomerce.repository.PedidoRepository;
 import com.spring.eccomerce.repository.ProductoRepository;
 import com.spring.eccomerce.service.CarritoService;
 import com.spring.eccomerce.service.CheckoutService;
+import com.spring.eccomerce.service.impl.security.UsuarioSecurity;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,7 +44,21 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Override
     public CheckoutDTO obtenerFormulario() {
-        return null;
+        //Obtenemos el usuario autenticado del contexto de seguridad de spring security
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UsuarioSecurity usuarioSecurity = (UsuarioSecurity) auth.getPrincipal();
+        Usuario usuario = usuarioSecurity.getUsuario();
+
+        //Generamos el checkoutDTO que se va a usar para llenarlo con los datos del formulario
+        CheckoutDTO checkoutDTO = new CheckoutDTO();
+
+        //Establecemos los campos conocidos del usuario y que vamos a pedir en el forulario del checkout
+        checkoutDTO.setNombreCliente(usuario.getNombre());
+        checkoutDTO.setTelefono(usuario.getTelefono());
+        checkoutDTO.setDireccionEnvio(usuario.getDireccionEnvio());
+
+        //Regresamos el objeto chekout con los datos precargados del usuario autenticado
+        return checkoutDTO;
     }
 
     @Override
@@ -72,7 +90,13 @@ public class CheckoutServiceImpl implements CheckoutService {
         //Generamos el pedido que vamos a almacenar, en base a los datos de envio recibidos en el dto, el monto total del
         //carrito de la sesion y el estado y fecha generados manualmente
         Pedido pedido = new Pedido();
-        pedido.setUsuario(null); //TEMPORAL: Con spring security, podemos establecerlo con el SecurityContextHolder
+
+        //Obtenemos el usuario autenticado del contexto de seguridad de spring security
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UsuarioSecurity usuarioSecurity = (UsuarioSecurity) auth.getPrincipal();
+        Usuario usuario = usuarioSecurity.getUsuario();
+
+        pedido.setUsuario(usuario);
         pedido.setEstadoPedido(EstadoPedido.PENDIENTE);
         pedido.setImporteTotal(carrito.getTotal());
         pedido.setDireccionEnvio(construirDireccionEnvio(checkoutDTO));

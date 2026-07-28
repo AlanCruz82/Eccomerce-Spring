@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/layout/header :: header('Detalle del pedido')}"></head>
 
@@ -95,7 +96,7 @@
             </div>
 
             <!-- Actualizar estado -->
-            <div class="card shadow-sm mb-4">
+            <div sec:authorize="hasRole('ADMIN')" class="card shadow-sm mb-4">
                 <div class="card-header bg-warning text-white">
                     <h5 class="mb-0">
                         <i class="bi bi-arrow-repeat"></i> Cambiar estado

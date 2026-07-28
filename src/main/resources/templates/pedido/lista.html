@@ -19,8 +19,8 @@
     </div>
 
     <div class="mb-5">
-        <h1 class="fw-bold">Mis pedidos</h1>
-        <p class="text-muted">Historial de tus compras realizadas.</p>
+        <h1 class="fw-bold" th:text="${esUsuario} ? 'Mis pedidos' : 'Todos los pedidos'"></h1>
+        <p class="text-muted" th:text="${esUsuario} ? 'Historial de tus compras realizadas.' : 'Gestión de pedidos realizados.'"></p>
     </div>
 
     <div class="card shadow-sm">
@@ -60,7 +60,7 @@
                         </tr>
                         <tr th:if="${pedidos.content.isEmpty()}">
                             <td colspan="5" class="text-center py-5">
-                                <p class="text-muted mb-0">No tienes pedidos registrados.</p>
+                                <p class="text-muted mb-0" th:text="${esUsuario} ? 'No tienes pedidos registrados.' : 'No hay pedidos registrados.'"></p>
                                 <a th:href="@{/productos}" class="btn btn-primary mt-3">
                                     Ir a comprar
                                 </a>

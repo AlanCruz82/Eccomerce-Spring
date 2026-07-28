@@ -1,10 +1,14 @@
 package com.spring.eccomerce.controller;
 
+import com.spring.eccomerce.entity.Usuario;
 import com.spring.eccomerce.entity.enums.EstadoPedido;
 import com.spring.eccomerce.service.PedidoService;
+import com.spring.eccomerce.service.impl.security.UsuarioSecurity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,14 +47,20 @@ public class PedidoController {
         return "pedido/lista";
     }
 
-    @GetMapping("/{id}/usuario")
-    public String mostrarPedidosPorUsuario(@PathVariable Long id,
-                                           @RequestParam(defaultValue = "0") int pagina,
+    @GetMapping("/usuario")
+    public String mostrarPedidosPorUsuario(@RequestParam(defaultValue = "0") int pagina,
                                            @RequestParam(defaultValue = "5") int tamanio,
                                            Model model){
+        //Obtenemos el usuarioSecurity autenticado presente en la sesion de spring security
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UsuarioSecurity usuarioSecurity = (UsuarioSecurity) auth.getPrincipal();
+
+        //Del usuarioSecurity, obtenemos el id de la entidad usuario que esta autenticada
+        Long idUsuario = usuarioSecurity.getUsuario().getId();
         //Generamos la pagina de los parametros enviados en la url
         Pageable page =  PageRequest.of(pagina, tamanio);
-        model.addAttribute("pedidos", pedidoService.obtenerPedidosPorUsuarioId(id, page));
+        model.addAttribute("pedidos", pedidoService.obtenerPedidosPorUsuarioId(idUsuario, page));
+        model.addAttribute("esUsuario", true);
         return "pedido/lista";
     }
 

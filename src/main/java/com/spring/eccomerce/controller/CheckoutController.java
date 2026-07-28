@@ -22,6 +22,7 @@ public class CheckoutController {
     private final CarritoService carritoService;
     //Depedencia para procesar la logica al realizar la compra del carrito
     private final CheckoutService checkoutService;
+
     @GetMapping
     public String mostrarCheckout(Model model) {
 
@@ -31,7 +32,7 @@ public class CheckoutController {
         }
 
         //Agregamos al modelo el objeto checkout que se va a llenar con la informacion del formulario y el carrito de la sesion
-        model.addAttribute("checkout", new CheckoutDTO());
+        model.addAttribute("checkout", checkoutService.obtenerFormulario());
         model.addAttribute("carrito", carritoService.obtenerCarrito());
 
         return "checkout/index";
