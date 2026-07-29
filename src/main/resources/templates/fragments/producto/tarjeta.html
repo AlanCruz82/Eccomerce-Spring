@@ -1,5 +1,6 @@
 <div
         xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         th:fragment="tarjeta(producto)">
 
     <div class="card product-card h-100 shadow-sm">
@@ -60,6 +61,12 @@
 
                     Ver detalle
 
+                </a>
+
+                <a sec:authorize="hasRole('ADMIN')"
+                   class="btn btn-outline-warning w-100 mt-1"
+                   th:href="@{/admin/productos/{id}/editar(id=${producto.id})}">
+                    <i class="bi bi-pencil"></i> Editar
                 </a>
 
             </div>

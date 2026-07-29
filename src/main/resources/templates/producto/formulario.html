@@ -21,8 +21,8 @@
                     </h3>
 
                     <form th:action="${productoId} != null
-                            ? @{/productos/{id}(id=${productoId})}
-                            : @{/productos}"
+                            ? @{/admin/productos/{id}(id=${productoId})}
+                            : @{/admin/productos}"
                           th:object="${producto}"
                           method="post">
 

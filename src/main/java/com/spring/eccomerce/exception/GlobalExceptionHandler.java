@@ -56,13 +56,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UsuarioDuplicadoException.class)
-    public String handleUsuarioDuplicado(Exception ex, RedirectAttributes ra) {
+    public String handleUsuarioDuplicado(UsuarioDuplicadoException ex, RedirectAttributes ra) {
         ra.addFlashAttribute("error", ex.getMessage());
         return "redirect:/registro";
     }
 
     @ExceptionHandler(RolNotFoundException.class)
-    public String handleRolNotFound(Exception ex, RedirectAttributes ra) {
+    public String handleRolNotFound(RolNotFoundException ex, RedirectAttributes ra) {
         ra.addFlashAttribute("error", ex.getMessage());
         return "redirect:/registro";
     }

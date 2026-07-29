@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/layout/header :: header('Categorías')}"></head>
 
@@ -10,6 +11,15 @@
 <main class="container py-4">
 
     <div th:replace="~{fragments/comun/mensaje-error :: mensaje-error}"></div>
+
+    <div class="d-flex justify-content-between align-items-center mb-0">
+      <h2><i class="bi bi-grid"></i> Categorías</h2>
+      <a sec:authorize="hasRole('ADMIN')"
+         th:href="@{/admin/categorias/nueva}"
+         class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Nueva categoría
+      </a>
+    </div>
 
     <div th:replace="~{fragments/categoria/categorias :: categorias}"></div>
 

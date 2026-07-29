@@ -72,11 +72,14 @@
         </div>
     </div>
 
-    <nav th:if="${pedidos.totalPages > 0}" class="mt-4" aria-label="Paginación de pedidos">
+    <nav th:if="${pedidos.totalPages > 0}"
+         th:with="baseUrl=${esUsuario} ? '/pedidos/usuario' : '/pedidos'"
+         class="mt-4" aria-label="Paginación de pedidos">
         <ul class="pagination justify-content-center">
 
             <li class="page-item" th:classappend="${pedidos.first} ? 'disabled'">
-                <a class="page-link" th:href="@{/pedidos(pagina=${pedidos.number - 1})}"
+                <a class="page-link"
+                   th:href="@{${baseUrl}(pagina=${pedidos.number - 1})}"
                    aria-label="Anterior">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -86,12 +89,13 @@
                 th:each="i : ${#numbers.sequence(0, pedidos.totalPages - 1)}"
                 th:classappend="${i == pedidos.number} ? 'active'">
                 <a class="page-link"
-                   th:href="@{/pedidos(pagina=${i})}"
+                   th:href="@{${baseUrl}(pagina=${i})}"
                    th:text="${i + 1}"></a>
             </li>
 
             <li class="page-item" th:classappend="${pedidos.last} ? 'disabled'">
-                <a class="page-link" th:href="@{/pedidos(pagina=${pedidos.number + 1})}"
+                <a class="page-link"
+                   th:href="@{${baseUrl}(pagina=${pedidos.number + 1})}"
                    aria-label="Siguiente">
                     <span aria-hidden="true">&raquo;</span>
                 </a>

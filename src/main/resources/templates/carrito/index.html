@@ -18,7 +18,7 @@
     <div
             th:replace="~{fragments/comun/navegacion ::
             navegacion(
-                null,
+                Productos,
                 'Mi carrito')}">
     </div>
 
@@ -42,6 +42,18 @@
             </div>
 
         </div>
+
+    </div>
+
+    <!-- Sin elementos en el carrito -->
+
+    <div
+            class="alert alert-warning mt-4"
+            th:if="${#lists.isEmpty(carrito.items)}">
+
+        <i class="bi bi-exclamation-circle"></i>
+
+        El carrito esta vacio.
 
     </div>
 

@@ -112,18 +112,13 @@
                 <span class="text-light me-2 small" sec:authentication="name"></span>
 
                 <a sec:authorize="hasRole('ADMIN')" class="nav-link text-light px-2"
-                   th:href="@{/pedidos}">
+                   th:href="@{/admin/pedidos}">
                     <i class="bi bi-box"></i> Pedidos
                 </a>
 
                 <a sec:authorize="hasRole('CLIENTE')" class="nav-link text-light px-2"
                    th:href="@{/pedidos/usuario}">
                     <i class="bi bi-box"></i> Mis pedidos
-                </a>
-
-                <a sec:authorize="hasRole('ADMIN')" class="nav-link text-light px-2"
-                   th:href="@{/admin/pedidos}">
-                    <i class="bi bi-speedometer2"></i> Admin
                 </a>
 
                 <form th:action="@{/logout}" method="post" class="d-inline">
