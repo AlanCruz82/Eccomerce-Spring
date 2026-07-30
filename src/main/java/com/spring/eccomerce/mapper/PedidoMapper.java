@@ -37,6 +37,7 @@ public class PedidoMapper {
                 .id(pedido.getId())
                 .estado(pedido.getEstadoPedido())
                 .total(pedido.getImporteTotal())
+                .usuario(usuarioMapper.toResumenDTO(pedido.getUsuario()))
                 .fechaActualizacion(pedido.getFechaActualizacion())
                 .build();
     }

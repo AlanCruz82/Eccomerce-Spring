@@ -64,18 +64,6 @@ public class PedidoController {
         return "pedido/lista";
     }
 
-    @GetMapping("/{estado}/estado")
-    public String mostrarPedidosPorEstado(@PathVariable EstadoPedido estado,
-                                           @RequestParam(defaultValue = "0") int pagina,
-                                           @RequestParam(defaultValue = "5") int tamanio,
-                                           Model model){
-        //Generamos la pagina de los parametros enviados en la url
-        Pageable page =  PageRequest.of(pagina, tamanio);
-        model.addAttribute("pedidos", pedidoService.obtenerPedidosPorEstado(estado, page));
-        return "pedido/lista";
-    }
-
-
 
 
 }

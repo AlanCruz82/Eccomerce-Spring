@@ -11,10 +11,12 @@ import com.spring.eccomerce.exception.UsuarioNotFoundException;
 import com.spring.eccomerce.mapper.PedidoMapper;
 import com.spring.eccomerce.repository.PedidoRepository;
 import com.spring.eccomerce.repository.UsuarioRepository;
+import com.spring.eccomerce.repository.specification.PedidoSpecification;
 import com.spring.eccomerce.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,9 +60,11 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Page<PedidoResumenDTO> obtenerPedidosPorEstado(EstadoPedido estado, Pageable pagina) {
-        //Regresamos la pagina de pedidos encontrados por el estado enviado como argumento
-        return pedidoRepository.findByEstadoPedido(estado, pagina).map(pedidoMapper::toResumenDTO);
+    public Page<PedidoResumenDTO> obtenerPedidosFiltrados(EstadoPedido estado, Long usuarioId, Pageable pagina) {
+        Specification<Pedido> spec = Specification
+                .where(PedidoSpecification.estadoEquals(estado))
+                .and(PedidoSpecification.usuarioIdEquals(usuarioId));
+        return pedidoRepository.findAll(spec, pagina).map(pedidoMapper::toResumenDTO);
     }
 
     @Override

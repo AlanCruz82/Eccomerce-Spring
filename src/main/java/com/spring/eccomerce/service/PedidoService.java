@@ -12,6 +12,6 @@ public interface PedidoService {
     PedidoDetalleDTO obtenerPedidoPorId(Long id);
     Page<PedidoResumenDTO> obtenerPedidos(Pageable pagina);
     Page<PedidoResumenDTO> obtenerPedidosPorUsuarioId(Long idUsuario, Pageable pagina);
-    Page<PedidoResumenDTO> obtenerPedidosPorEstado(EstadoPedido estado, Pageable pagina);
+    Page<PedidoResumenDTO> obtenerPedidosFiltrados(EstadoPedido estado, Long usuarioId, Pageable pagina);
     PedidoResponseDTO actualizarEstado(Long id, EstadoPedido nuevoEstado);
 }

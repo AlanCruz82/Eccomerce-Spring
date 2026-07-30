@@ -12,6 +12,7 @@ import com.spring.eccomerce.repository.CategoriaRepository;
 import com.spring.eccomerce.repository.ProductoRepository;
 import com.spring.eccomerce.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,7 +74,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public List<CategoriaResumenDTO> obtenerCategorias() {
-        return categoriaRepository.findAll().stream().map(categoriaMapper::toResumenDTO).toList();
+        return categoriaRepository.findAll(Sort.by("nombre")).stream().map(categoriaMapper::toResumenDTO).toList();
     }
 
     @Override

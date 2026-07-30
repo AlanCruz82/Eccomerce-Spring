@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -55,5 +57,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         //Guardamos el nuevo usuario en la base de datos y regresamos el usuario en su formato resumenDTO
         return usuarioMapper.toResumenDTO(usuarioRepository.save(usuario));
+    }
+
+    @Override
+    public List<UsuarioResumenDTO> obtenerTodos() {
+        return usuarioRepository.findAll().stream()
+                .map(usuarioMapper::toResumenDTO)
+                .toList();
     }
 }

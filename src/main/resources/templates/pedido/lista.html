@@ -23,6 +23,42 @@
         <p class="text-muted" th:text="${esUsuario} ? 'Historial de tus compras realizadas.' : 'Gestión de pedidos realizados.'"></p>
     </div>
 
+    <!-- Filtros (solo admin, cuando estados está presente en el modelo) -->
+    <div th:if="${estados != null}" class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" th:action="@{/admin/pedidos}" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="filtroEstado" class="form-label">Estado</label>
+                    <select name="estado" id="filtroEstado" class="form-select">
+                        <option value="">Todos los estados</option>
+                        <option th:each="e : ${estados}"
+                                th:value="${e.name()}"
+                                th:text="${e.name()}"
+                                th:selected="${e.name() == filtroEstado}"></option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="filtroUsuario" class="form-label">Cliente</label>
+                    <select name="usuarioId" id="filtroUsuario" class="form-select">
+                        <option value="">Todos los clientes</option>
+                        <option th:each="u : ${usuarios}"
+                                th:value="${u.id}"
+                                th:text="${u.nombre} + ' (' + ${u.correElectronico} + ')'"
+                                th:selected="${u.id == filtroUsuarioId}"></option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-funnel"></i> Filtrar
+                    </button>
+                    <a th:href="@{/admin/pedidos}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Limpiar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -32,6 +68,7 @@
                             <th>Pedido</th>
                             <th>Fecha</th>
                             <th>Estado</th>
+                            <th th:unless="${esUsuario}">Cliente</th>
                             <th class="text-end">Total</th>
                             <th class="text-end">Acción</th>
                         </tr>
@@ -48,6 +85,11 @@
                             <td>
                                 <div th:replace="~{fragments/pedido/estado :: estado(${pedido.estado})}"></div>
                             </td>
+                            <td th:unless="${esUsuario}">
+                                <span th:text="${pedido.usuario.nombre}"></span>
+                                <br>
+                                <small class="text-muted" th:text="${pedido.usuario.correElectronico}"></small>
+                            </td>
                             <td class="text-end fw-bold">
                                 $<span th:text="${pedido.total}"></span>
                             </td>
@@ -59,7 +101,7 @@
                             </td>
                         </tr>
                         <tr th:if="${pedidos.content.isEmpty()}">
-                            <td colspan="5" class="text-center py-5">
+                            <td colspan="6" class="text-center py-5">
                                 <p class="text-muted mb-0" th:text="${esUsuario} ? 'No tienes pedidos registrados.' : 'No hay pedidos registrados.'"></p>
                                 <a th:href="@{/productos}" class="btn btn-primary mt-3">
                                     Ir a comprar
@@ -73,13 +115,13 @@
     </div>
 
     <nav th:if="${pedidos.totalPages > 0}"
-         th:with="baseUrl=${esUsuario} ? '/pedidos/usuario' : '/pedidos'"
+         th:with="baseUrl=${esUsuario} ? '/pedidos/usuario' : (${estados != null} ? '/admin/pedidos' : '/pedidos')"
          class="mt-4" aria-label="Paginación de pedidos">
         <ul class="pagination justify-content-center">
 
             <li class="page-item" th:classappend="${pedidos.first} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{${baseUrl}(pagina=${pedidos.number - 1})}"
+                   th:href="@{${baseUrl}(pagina=${pedidos.number - 1}, estado=${filtroEstado}, usuarioId=${filtroUsuarioId})}"
                    aria-label="Anterior">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -89,13 +131,13 @@
                 th:each="i : ${#numbers.sequence(0, pedidos.totalPages - 1)}"
                 th:classappend="${i == pedidos.number} ? 'active'">
                 <a class="page-link"
-                   th:href="@{${baseUrl}(pagina=${i})}"
+                   th:href="@{${baseUrl}(pagina=${i}, estado=${filtroEstado}, usuarioId=${filtroUsuarioId})}"
                    th:text="${i + 1}"></a>
             </li>
 
             <li class="page-item" th:classappend="${pedidos.last} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{${baseUrl}(pagina=${pedidos.number + 1})}"
+                   th:href="@{${baseUrl}(pagina=${pedidos.number + 1}, estado=${filtroEstado}, usuarioId=${filtroUsuarioId})}"
                    aria-label="Siguiente">
                     <span aria-hidden="true">&raquo;</span>
                 </a>

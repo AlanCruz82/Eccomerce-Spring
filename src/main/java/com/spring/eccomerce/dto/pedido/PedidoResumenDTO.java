@@ -1,5 +1,6 @@
 package com.spring.eccomerce.dto.pedido;
 
+import com.spring.eccomerce.dto.usuario.UsuarioResumenDTO;
 import com.spring.eccomerce.entity.enums.EstadoPedido;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,5 +16,6 @@ public class PedidoResumenDTO {
     private Long id;
     private EstadoPedido estado;
     private BigDecimal total;
+    private UsuarioResumenDTO usuario;
     private LocalDateTime fechaActualizacion;
 }
