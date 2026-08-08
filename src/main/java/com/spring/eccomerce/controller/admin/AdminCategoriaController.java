@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,11 @@ public class AdminCategoriaController {
     }
 
     @PostMapping
-    public String crearCategoria(@Valid @ModelAttribute("categoria") CategoriaRequestDTO requestDTO) {
+    public String crearCategoria(@Valid @ModelAttribute("categoria") CategoriaRequestDTO requestDTO,
+                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "categoria/formulario";
+        }
         categoriaService.crearCategoria(requestDTO);
         return "redirect:/admin/categorias";
     }
@@ -41,7 +46,12 @@ public class AdminCategoriaController {
 
     @PostMapping("/{id}")
     public String actualizarCategoria(@PathVariable Long id,
-                                      @Valid @ModelAttribute("categoria") CategoriaRequestDTO requestDTO) {
+                                      @Valid @ModelAttribute("categoria") CategoriaRequestDTO requestDTO,
+                                      BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categoriaId", id);
+            return "categoria/formulario";
+        }
         categoriaService.actualizarCategoria(id, requestDTO);
         return "redirect:/admin/categorias";
     }

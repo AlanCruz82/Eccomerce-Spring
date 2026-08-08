@@ -1,5 +1,6 @@
 package com.spring.eccomerce.service.impl;
 
+import com.spring.eccomerce.config.StorageProperties;
 import com.spring.eccomerce.dto.producto.*;
 import com.spring.eccomerce.entity.Categoria;
 import com.spring.eccomerce.entity.Producto;
@@ -11,11 +12,13 @@ import com.spring.eccomerce.repository.CategoriaRepository;
 import com.spring.eccomerce.repository.ProductoRepository;
 import com.spring.eccomerce.repository.specification.ProductoSpecification;
 import com.spring.eccomerce.service.ProductoService;
+import com.spring.eccomerce.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,6 +33,8 @@ public class ProductoServiceImpl implements ProductoService {
     private final ProductoMapper productoMapper;
     //Dependencia para obtener y consultar la categoria del producto
     private final CategoriaRepository categoriaRepository;
+    //Dependencia del servicio de storage para obtener la url de la imagen del producto y guardala
+    private final StorageService storageService;
 
     @Override
     public Page<ProductoResumenDTO> obtenerProductos(ProductoFiltroDTO filtroDTO, Pageable pagina) {
@@ -56,7 +61,7 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public ProductoResumenDTO crearProducto(ProductoRequestDTO producto) {
+    public ProductoResumenDTO crearProducto(ProductoRequestDTO producto, MultipartFile imagen) {
         //Verificamos si ya existe un producto en la base de datos con el nombre del producto que se quiere agregar
         if (productoRepository.existsByNombreIgnoreCase(producto.getNombre())) {
             throw new ProductoDuplicadoException(producto.getNombre());
@@ -73,23 +78,40 @@ public class ProductoServiceImpl implements ProductoService {
         //Le asignamos la categoria a la entidad producto que acabamos de generar
         productoNuevo.setCategoria(categoria);
 
+        //Obtenemos la url de la imagen enviada como argumento a la vez que la almacenamos en el directorio de uploads
+        String urlImagen = storageService.guardar(imagen);
+
+        //Establecemos la url de la imagen
+        productoNuevo.setUrlImagen(urlImagen);
+
         //Guardamos en la base de datos el producto y regresamos el producto creado como resumenDTO
         return productoMapper.toResumenDTO(productoRepository.save(productoNuevo));
     }
 
     @Override
-    public void actualizarProducto(Long id, ProductoRequestDTO productoActualizar) {
+    public void actualizarProducto(Long id, ProductoRequestDTO productoActualizar, MultipartFile imagen) {
         //Verificamos si el producto enviado como id existe en la base de datos
         Producto productoActualizado = productoRepository.findById(id).orElseThrow(
                 () -> new ProductoNotFoundException(id)
         );
+
+        //Si se envio una nueva imagen para el producto
+        if (!imagen.isEmpty()){
+            //Obtenemos la url de la imagen que tenia el producto
+            String urlImagenAntigua = productoActualizado.getUrlImagen();
+
+            //Generamos la url de la imagen enviada como parametro y la establecemos como la imagen del producto
+            productoActualizado.setUrlImagen(storageService.guardar(imagen));
+
+            //Borramos la imagen antigua que tenia el producto
+            storageService.eliminar(urlImagenAntigua);
+        }
 
         //Actualizamos los campos del producto con los enviados en el dto
         productoActualizado.setNombre(productoActualizar.getNombre());
         productoActualizado.setDescripcion(productoActualizar.getDescripcion());
         productoActualizado.setPrecio(productoActualizar.getPrecio());
         productoActualizado.setExistencia(productoActualizar.getExistencia());
-        productoActualizado.setUrlImagen(productoActualizar.getUrlImagen());
 
         //Validamos si la nueva categoria del producto existe en la base de datos
         Categoria categoria = categoriaRepository.findById(productoActualizar.getIdCategoria()).orElseThrow(
@@ -116,6 +138,9 @@ public class ProductoServiceImpl implements ProductoService {
         Producto producto = productoRepository.findById(id).orElseThrow(
                 () -> new ProductoNotFoundException(id)
         );
+
+        //Eliminamos del directorio uploads la imagen del producto
+        storageService.eliminar(producto.getUrlImagen());
 
         //Eliminamos el producto con el id enviado como argumento
         productoRepository.deleteById(id);

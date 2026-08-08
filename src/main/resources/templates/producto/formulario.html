@@ -9,6 +9,8 @@
 
 <main class="container py-4">
 
+    <div th:replace="~{fragments/comun/mensaje-error :: mensaje-error}"></div>
+
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6">
 
@@ -24,6 +26,7 @@
                             ? @{/admin/productos/{id}(id=${productoId})}
                             : @{/admin/productos}"
                           th:object="${producto}"
+                          enctype="multipart/form-data"
                           method="post">
 
                         <div class="mb-3">
@@ -36,6 +39,12 @@
                                    required>
                             <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}"
                                  th:errors="*{nombre}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
                         </div>
 
                         <div class="mb-3">
@@ -81,15 +90,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="urlImagen" class="form-label">URL de imagen</label>
-                            <input type="url"
-                                   id="urlImagen"
-                                   th:field="*{urlImagen}"
+                            <label for="imagen" class="form-label">Imagen del producto</label>
+                            <input type="file"
+                                   id="imagen"
+                                   name="imagen"
+                                   accept="image/png"
                                    class="form-control"
                                    placeholder="https://ejemplo.com/imagen.jpg"
-                                   required>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('urlImagen')}"
-                                 th:errors="*{urlImagen}"></div>
+                                   >
                         </div>
 
                         <div class="mb-4">

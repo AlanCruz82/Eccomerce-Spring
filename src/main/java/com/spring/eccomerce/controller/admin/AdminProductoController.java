@@ -8,11 +8,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/admin/productos")
@@ -30,9 +28,15 @@ public class AdminProductoController {
     }
 
     @PostMapping
-    public String crearProducto(@Valid @ModelAttribute("producto") ProductoRequestDTO requestDTO) {
-        ProductoResumenDTO creado = productoService.crearProducto(requestDTO);
-        return "redirect:/producto/" + creado.getId();
+    public String crearProducto(@Valid @ModelAttribute("producto") ProductoRequestDTO requestDTO,
+                                BindingResult bindingResult, Model model,
+                                @RequestParam(name = "imagen") MultipartFile imagen) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categorias", categoriaService.obtenerCategorias());
+            return "producto/formulario";
+        }
+        ProductoResumenDTO creado = productoService.crearProducto(requestDTO, imagen);
+        return "redirect:/productos/" + creado.getId();
     }
 
     @GetMapping("/{id}/editar")
@@ -45,14 +49,21 @@ public class AdminProductoController {
 
     @PostMapping("/{id}")
     public String actualizarProducto(@PathVariable Long id,
-                                     @Valid @ModelAttribute("producto") ProductoRequestDTO requestDTO) {
-        productoService.actualizarProducto(id, requestDTO);
-        return "redirect:/producto/" + id;
+                                     @Valid @ModelAttribute("producto") ProductoRequestDTO requestDTO,
+                                     BindingResult bindingResult, Model model,
+                                     @RequestParam(name = "imagen") MultipartFile imagen) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categorias", categoriaService.obtenerCategorias());
+            model.addAttribute("productoId", id);
+            return "producto/formulario";
+        }
+        productoService.actualizarProducto(id, requestDTO, imagen);
+        return "redirect:/productos/" + id;
     }
 
     @PostMapping("/{id}/eliminar")
     public String eliminarProducto(@PathVariable Long id) {
         productoService.eliminarProducto(id);
-        return "redirect:/producto";
+        return "redirect:/productos";
     }
 }

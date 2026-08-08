@@ -25,10 +25,6 @@ public class ProductoRequestDTO {
     @Min(value = 0, message = "La existencia del producto no puede ser menor a 0 unidades")
     private Integer existencia;
 
-    @NotBlank(message = "La imagen del producto no puede estar vacia")
-    @Size(max = 250, message = "La url de la imagen del producto no puede ser mayor a 250 caracteres")
-    private String urlImagen;
-
     @NotNull(message = "La categoria del producto no puede ser nula")
     private Long idCategoria;
 }

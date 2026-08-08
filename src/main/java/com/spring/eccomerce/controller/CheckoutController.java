@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,12 @@ public class CheckoutController {
     }
 
     @PostMapping
-    public String procesarCompra(@Valid @ModelAttribute CheckoutDTO checkoutDTO){
+    public String procesarCompra(@Valid @ModelAttribute("checkout") CheckoutDTO checkoutDTO,
+                                 BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("carrito", carritoService.obtenerCarrito());
+            return "checkout/index";
+        }
         PedidoResponseDTO pedido = checkoutService.confirmarCompra(checkoutDTO);
         return "redirect:/pedidos/" + pedido.getId() + "/confirmacion";
     }

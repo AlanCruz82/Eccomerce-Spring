@@ -1,14 +1,11 @@
 spring:
   application:
     name: Eccomerce
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-  jpa:
-    hibernate:
-        ddl-auto: update
-  show-sql: true
-
+  profiles.active : dev
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:8081}
+storage:
+  #Directorio local, en donde se van a almacenar las imagenes enviadas de los productos
+  upload-dir: uploads/productos
+  #Url que va a regresar las imagenes de los productos
+  upload-url: /uploads/productos

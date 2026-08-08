@@ -50,6 +50,9 @@
                             class="form-control"
                             th:field="*{telefono}"
                             required>
+                    <div class="text-danger small"
+                         th:if="${#fields.hasErrors('telefono')}"
+                         th:errors="*{telefono}"></div>
 
                 </div>
 
@@ -67,6 +70,9 @@
                             th:field="*{direccionEnvio}"
                             required>
                     </textarea>
+                    <div class="text-danger small"
+                         th:if="${#fields.hasErrors('direccionEnvio')}"
+                         th:errors="*{direccionEnvio}"></div>
 
                 </div>
 
@@ -84,6 +90,9 @@
                                 class="form-control"
                                 th:field="*{ciudad}"
                                 required>
+                        <div class="text-danger small"
+                             th:if="${#fields.hasErrors('ciudad')}"
+                             th:errors="*{ciudad}"></div>
 
                     </div>
 
@@ -99,6 +108,9 @@
                                 class="form-control"
                                 th:field="*{codigoPostal}"
                                 required>
+                        <div class="text-danger small"
+                             th:if="${#fields.hasErrors('codigoPostal')}"
+                             th:errors="*{codigoPostal}"></div>
 
                     </div>
 

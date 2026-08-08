@@ -35,13 +35,12 @@ public class ProductoMapper {
     public Producto toEntity(ProductoRequestDTO dto) {
 
         //Generamos la entidad de producto con los campos enviados por el dto
-        //AUN SIN LA CATEGORIA ASIGNADA, YA QUE ESO SE HACE EN EL SERVICIO
+        //AUN SIN LA CATEGORIA ASIGNADA NI LA IMAGEN DEL PRODUCTO, YA QUE ESO SE HACE EN EL SERVICIO
         return Producto.builder()
                 .nombre(dto.getNombre())
                 .descripcion(dto.getDescripcion())
                 .precio(dto.getPrecio())
                 .existencia(dto.getExistencia())
-                .urlImagen(dto.getUrlImagen())
                 .build();
     }
 
@@ -81,7 +80,6 @@ public class ProductoMapper {
         requestDTO.setDescripcion(detalleDTO.getDescripcion());
         requestDTO.setPrecio(detalleDTO.getPrecio());
         requestDTO.setExistencia(detalleDTO.getExistencia());
-        requestDTO.setUrlImagen(detalleDTO.getUrlImagen());
         requestDTO.setIdCategoria(detalleDTO.getCategoria().getId());
 
         //Regresamos el productoRequestDTO generado con los datos del producto
