@@ -14,5 +14,5 @@ public class ProductoFiltroDTO {
     private String nombre;
     private BigDecimal precioMinimo;
     private BigDecimal precioMaximo;
-    private Integer existencia = 0;
+    private Integer existencia;
 }

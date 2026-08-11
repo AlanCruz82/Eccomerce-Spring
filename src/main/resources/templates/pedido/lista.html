@@ -43,7 +43,7 @@
                         <option value="">Todos los clientes</option>
                         <option th:each="u : ${usuarios}"
                                 th:value="${u.id}"
-                                th:text="${u.nombre} + ' (' + ${u.correElectronico} + ')'"
+                                th:text="|${u.nombre} (${u.correoElectronico})|"
                                 th:selected="${u.id == filtroUsuarioId}"></option>
                     </select>
                 </div>
@@ -88,7 +88,7 @@
                             <td th:unless="${esUsuario}">
                                 <span th:text="${pedido.usuario.nombre}"></span>
                                 <br>
-                                <small class="text-muted" th:text="${pedido.usuario.correElectronico}"></small>
+                                <small class="text-muted" th:text="${pedido.usuario.correoElectronico}"></small>
                             </td>
                             <td class="text-end fw-bold">
                                 $<span th:text="${pedido.total}"></span>

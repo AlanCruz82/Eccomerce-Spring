@@ -1,33 +1,12 @@
 package com.spring.eccomerce.mapper;
 
 import com.spring.eccomerce.dto.usuario.UsuarioRequestDTO;
-import com.spring.eccomerce.dto.usuario.UsuarioResponseDTO;
 import com.spring.eccomerce.dto.usuario.UsuarioResumenDTO;
 import com.spring.eccomerce.entity.Usuario;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UsuarioMapper {
-
-    private final RolMapper rolMapper;
-
-    public UsuarioMapper(RolMapper rolMapper) {
-        this.rolMapper = rolMapper;
-    }
-
-    public UsuarioResponseDTO usuarioToUsuarioResponseDTO(Usuario usuario) {
-        return UsuarioResponseDTO.builder()
-                .id(usuario.getId())
-                .nombre(usuario.getNombre())
-                .correoElectronico(usuario.getCorreoElectronico())
-                .telefono(usuario.getTelefono())
-                .direccionEnvio(usuario.getDireccionEnvio())
-                .activo(usuario.getActivo())
-                .rol(rolMapper.toDTO(usuario.getRol()))
-                .fechaCreacion(usuario.getFechaCreacion())
-                .fechaActualizacion(usuario.getFechaActualizacion())
-                .build();
-    }
 
     public Usuario toEntity(UsuarioRequestDTO dto){
 
@@ -46,7 +25,7 @@ public class UsuarioMapper {
         return UsuarioResumenDTO.builder()
                 .id(usuario.getId())
                 .nombre(usuario.getNombre())
-                .correElectronico(usuario.getCorreoElectronico())
+                .correoElectronico(usuario.getCorreoElectronico())
                 .build();
     }
 }

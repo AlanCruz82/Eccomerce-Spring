@@ -10,5 +10,5 @@ public class UsuarioResumenDTO {
 
     private Long id;
     private String nombre;
-    private String correElectronico;
+    private String correoElectronico;
 }

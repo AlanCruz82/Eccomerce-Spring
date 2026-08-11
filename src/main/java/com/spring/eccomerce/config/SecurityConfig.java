@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/login", "/registro",
-                                "/css/**", "/js/**", "/images/**").permitAll()
+                                "/css/**", "/js/**", "/images/**", "/uploads/productos/**").permitAll()
                         .requestMatchers("/", "/productos", "/productos/**",
                                 "/categorias", "/carrito/**").permitAll()
                         .requestMatchers("/pedidos").hasRole("ADMIN")
@@ -68,5 +68,4 @@ public class SecurityConfig {
         //Instancia del algoritmo de encriptacion que va a obtener el valor hash de la contrasena
         return new BCryptPasswordEncoder();
     }
-
 }

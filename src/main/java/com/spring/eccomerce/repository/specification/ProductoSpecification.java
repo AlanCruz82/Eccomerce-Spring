@@ -28,15 +28,15 @@ public class ProductoSpecification {
     }
 
     //Consulta por precio maximo o igual al enviado como argumento
-    public static Specification<Producto> precioGreatherOrEquall(BigDecimal precioMaximo){
+    public static Specification<Producto> precioGreaterThanOrEqual(BigDecimal precioMaximo){
         return  (root, query, criteriaBuilder) ->
                 precioMaximo == null ? null : criteriaBuilder.greaterThanOrEqualTo
                         (root.get("precio"), precioMaximo);
     }
 
-    //Consulta para obtener solo los productos que tengan existencias
-    public static Specification<Producto> existenciaGreatherThan(Integer existencia){
+    //Consulta para obtener solo los productos que tengan mas existencias que las enviadas como argumento
+    public static Specification<Producto> existenciaGreaterThan(Integer existencia){
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.greaterThan(root.get("existencia"), existencia);
+                existencia == null ? null : criteriaBuilder.greaterThan(root.get("existencia"), existencia);
     }
 }

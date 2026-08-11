@@ -41,8 +41,9 @@ public class ProductoServiceImpl implements ProductoService {
         //Generemos la consulta dinmica con las especificaciones enviadas como parametro dentro del dto
         Specification<Producto> especificaciones = Specification.where(ProductoSpecification.categoriaIdEquals(filtroDTO.getCategoriaId()))
                 .and(ProductoSpecification.nombreLike(filtroDTO.getNombre()))
-                .and(ProductoSpecification.precioGreatherOrEquall(filtroDTO.getPrecioMaximo()))
-                .and(ProductoSpecification.precioLessThanOrEqual(filtroDTO.getPrecioMinimo()));
+                .and(ProductoSpecification.precioGreaterThanOrEqual(filtroDTO.getPrecioMaximo()))
+                .and(ProductoSpecification.precioLessThanOrEqual(filtroDTO.getPrecioMinimo()))
+                .and(ProductoSpecification.existenciaGreaterThan(filtroDTO.getExistencia()));
 
         //Obtenemos la pagina de productos con las especificaciones indicadas y convertimos los productos de la pagina
         //en resumenes de productos
