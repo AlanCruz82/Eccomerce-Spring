@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/productos")
@@ -30,12 +31,14 @@ public class AdminProductoController {
     @PostMapping
     public String crearProducto(@Valid @ModelAttribute("producto") ProductoRequestDTO requestDTO,
                                 BindingResult bindingResult, Model model,
-                                @RequestParam(name = "imagen") MultipartFile imagen) {
+                                @RequestParam(name = "imagen") MultipartFile imagen,
+                                RedirectAttributes ra) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categorias", categoriaService.obtenerCategorias());
             return "producto/formulario";
         }
         ProductoResumenDTO creado = productoService.crearProducto(requestDTO, imagen);
+        ra.addFlashAttribute("creado", "Producto creado correctamente");
         return "redirect:/productos/" + creado.getId();
     }
 
@@ -51,19 +54,22 @@ public class AdminProductoController {
     public String actualizarProducto(@PathVariable Long id,
                                      @Valid @ModelAttribute("producto") ProductoRequestDTO requestDTO,
                                      BindingResult bindingResult, Model model,
-                                     @RequestParam(name = "imagen") MultipartFile imagen) {
+                                     @RequestParam(name = "imagen") MultipartFile imagen,
+                                     RedirectAttributes ra) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categorias", categoriaService.obtenerCategorias());
             model.addAttribute("productoId", id);
             return "producto/formulario";
         }
         productoService.actualizarProducto(id, requestDTO, imagen);
+        ra.addFlashAttribute("actualizado", "Producto actualizado correctamente");
         return "redirect:/productos/" + id;
     }
 
     @PostMapping("/{id}/eliminar")
-    public String eliminarProducto(@PathVariable Long id) {
+    public String eliminarProducto(@PathVariable Long id, RedirectAttributes ra) {
         productoService.eliminarProducto(id);
+        ra.addFlashAttribute("eliminado", "Producto eliminado correctamente");
         return "redirect:/productos";
     }
 }

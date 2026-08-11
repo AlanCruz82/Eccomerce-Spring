@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -53,8 +54,10 @@ public class AdminPedidoController {
 
     @PostMapping("/{id}/estado")
     public String actualizarEstado(@PathVariable Long id,
-                                   @RequestParam EstadoPedido estado) {
+                                   @RequestParam EstadoPedido estado,
+                                   RedirectAttributes ra) {
         pedidoService.actualizarEstado(id, estado);
+        ra.addFlashAttribute("actualizado", "Estado del pedido actualizado a " + estado + " correctamente");
         return "redirect:/admin/pedidos/" + id;
     }
 }

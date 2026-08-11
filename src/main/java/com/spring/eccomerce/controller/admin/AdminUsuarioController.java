@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
 @Controller
@@ -44,18 +45,20 @@ public class AdminUsuarioController {
     @PostMapping("/{id}")
     public String actualizarUsuario(@PathVariable Long id,
                                     @Valid @ModelAttribute("usuario") UsuarioEditRequestDTO dto,
-                                    BindingResult bindingResult, Model model) {
+                                    BindingResult bindingResult, Model model, RedirectAttributes ra) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("usuarioId", id);
             return "usuario/formulario";
         }
         usuarioService.actualizarUsuario(id, dto);
+        ra.addFlashAttribute("actualizado", "Usuario actualizado correctamente");
         return "redirect:/admin/usuarios";
     }
 
     @PostMapping("/{id}/estado")
-    public String cambiarEstado(@PathVariable Long id, @RequestParam boolean activo) {
+    public String cambiarEstado(@PathVariable Long id, @RequestParam boolean activo, RedirectAttributes ra) {
         usuarioService.cambiarEstadoActivo(id, activo);
+        ra.addFlashAttribute("actualizado", activo ? "Usuario activado correctamente" : "Usuario desactivado correctamente");
         return "redirect:/admin/usuarios";
     }
 }

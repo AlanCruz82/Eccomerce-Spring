@@ -44,7 +44,8 @@ com.spring.eccomerce
 ## Exception pattern
 - Exceptions extend `ResourceNotFoundException` or `DuplicateResourceException` (both abstract, extend `RuntimeException`); business errors extend `RuntimeException` directly (`CarritoVacioException`, `StockInsuficienteException`, `StorageExcepcion`)
 - `GlobalExceptionHandler` catches each → `ra.addFlashAttribute("error", message)` → redirect
-- All views include `fragments/comun/mensaje-error :: mensaje-error` to display flash errors
+- Admin CRUD controllers add `ra.addFlashAttribute("creado" | "actualizado" | "eliminado", message)` → redirect. The fragment renders the alert green (`alert-success`) for `creado`, yellow (`alert-warning`) for `actualizado`, red (`alert-danger`) for `eliminado`
+- All views include `fragments/comun/mensaje :: mensaje` to display flash error/success messages
 
 ## Template architecture
 - 14 view templates + 23 fragments under `templates/` (`auth/`, `carrito/`, `categoria/`, `checkout/`, `home/`, `pedido/`, `producto/`)

@@ -1,0 +1,60 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="mensaje">
+
+    <!-- Alerta de error detectado en GlobalExcepcionHandler -->
+    <div th:if="${error}"  class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+        <span th:text="${error}"></span>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar"></button>
+
+    </div>
+
+    <!-- Alerta de creacion enviada desde los controladores admin -->
+    <div th:if="${creado}" class="alert alert-success alert-dismissible fade show" role="alert">
+
+        <i class="bi bi-check-circle-fill me-2"></i>
+
+        <span th:text="${creado}"></span>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar"></button>
+
+    </div>
+
+    <!-- Alerta de edicion enviada desde los controladores admin -->
+    <div th:if="${actualizado}" class="alert alert-warning alert-dismissible fade show" role="alert">
+
+        <i class="bi bi-pencil-fill me-2"></i>
+
+        <span th:text="${actualizado}"></span>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar"></button>
+
+    </div>
+
+    <!-- Alerta de eliminacion enviada desde los controladores admin -->
+    <div th:if="${eliminado}" class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <i class="bi bi-trash-fill me-2"></i>
+
+        <span th:text="${eliminado}"></span>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar"></button>
+
+    </div>
+
+</div>

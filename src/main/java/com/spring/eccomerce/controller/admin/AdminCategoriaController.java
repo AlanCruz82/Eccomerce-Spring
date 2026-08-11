@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
 @Controller
@@ -29,11 +30,12 @@ public class AdminCategoriaController {
 
     @PostMapping
     public String crearCategoria(@Valid @ModelAttribute("categoria") CategoriaRequestDTO requestDTO,
-                                 BindingResult bindingResult) {
+                                 BindingResult bindingResult, RedirectAttributes ra) {
         if (bindingResult.hasErrors()) {
             return "categoria/formulario";
         }
         categoriaService.crearCategoria(requestDTO);
+        ra.addFlashAttribute("creado", "Categoría creada correctamente");
         return "redirect:/admin/categorias";
     }
 
@@ -47,18 +49,20 @@ public class AdminCategoriaController {
     @PostMapping("/{id}")
     public String actualizarCategoria(@PathVariable Long id,
                                       @Valid @ModelAttribute("categoria") CategoriaRequestDTO requestDTO,
-                                      BindingResult bindingResult, Model model) {
+                                      BindingResult bindingResult, Model model, RedirectAttributes ra) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("categoriaId", id);
             return "categoria/formulario";
         }
         categoriaService.actualizarCategoria(id, requestDTO);
+        ra.addFlashAttribute("actualizado", "Categoría actualizada correctamente");
         return "redirect:/admin/categorias";
     }
 
     @PostMapping("/{id}/eliminar")
-    public String eliminarCategoria(@PathVariable Long id) {
+    public String eliminarCategoria(@PathVariable Long id, RedirectAttributes ra) {
         categoriaService.eliminarCategoria(id);
+        ra.addFlashAttribute("eliminado", "Categoría eliminada correctamente");
         return "redirect:/admin/categorias";
     }
 
