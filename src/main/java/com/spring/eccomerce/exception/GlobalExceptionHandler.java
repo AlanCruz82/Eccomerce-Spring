@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -26,9 +28,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UsuarioNotFoundException.class)
-    public String handleUsuarioNotFound(UsuarioNotFoundException ex, RedirectAttributes ra) {
+    public String handleUsuarioNotFound(UsuarioNotFoundException ex, RedirectAttributes ra, HttpServletRequest request) {
         ra.addFlashAttribute("error", ex.getMessage());
-        return "redirect:/";
+        return destinoUsuario(request);
     }
 
     @ExceptionHandler(ProductoDuplicadoException.class)
@@ -56,20 +58,27 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UsuarioDuplicadoException.class)
-    public String handleUsuarioDuplicado(UsuarioDuplicadoException ex, RedirectAttributes ra) {
+    public String handleUsuarioDuplicado(UsuarioDuplicadoException ex, RedirectAttributes ra, HttpServletRequest request) {
         ra.addFlashAttribute("error", ex.getMessage());
-        return "redirect:/registro";
+        return destinoUsuario(request);
     }
 
     @ExceptionHandler(RolNotFoundException.class)
-    public String handleRolNotFound(RolNotFoundException ex, RedirectAttributes ra) {
+    public String handleRolNotFound(RolNotFoundException ex, RedirectAttributes ra, HttpServletRequest request) {
         ra.addFlashAttribute("error", ex.getMessage());
-        return "redirect:/registro";
+        return destinoUsuario(request);
     }
 
     @ExceptionHandler(Exception.class)
     public String handleGeneral(Exception ex, RedirectAttributes ra) {
         ra.addFlashAttribute("error", "Ocurrió un error inesperado");
         return "redirect:/";
+    }
+
+    //Metodo para redirigir los errores de usuario hacia la zona de administracion cuando la peticion proviene de ella
+    private String destinoUsuario(HttpServletRequest request) {
+        return request.getRequestURI().startsWith("/admin")
+                ? "redirect:/admin/usuarios"
+                : "redirect:/registro";
     }
 }

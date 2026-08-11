@@ -1,19 +1,25 @@
 package com.spring.eccomerce.service.impl;
 
+import com.spring.eccomerce.dto.usuario.UsuarioEditRequestDTO;
 import com.spring.eccomerce.dto.usuario.UsuarioRequestDTO;
+import com.spring.eccomerce.dto.usuario.UsuarioResponseDTO;
 import com.spring.eccomerce.dto.usuario.UsuarioResumenDTO;
 import com.spring.eccomerce.entity.Rol;
 import com.spring.eccomerce.entity.Usuario;
 import com.spring.eccomerce.entity.enums.NombreRol;
 import com.spring.eccomerce.exception.RolNotFoundException;
 import com.spring.eccomerce.exception.UsuarioDuplicadoException;
+import com.spring.eccomerce.exception.UsuarioNotFoundException;
 import com.spring.eccomerce.mapper.UsuarioMapper;
 import com.spring.eccomerce.repository.RolRepository;
 import com.spring.eccomerce.repository.UsuarioRepository;
 import com.spring.eccomerce.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,7 +42,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResumenDTO registrar(UsuarioRequestDTO dto) {
 
         //Validamos si el nuevo usuario que se quiere registrar ya existe en la base de datos
-        if(usuarioRepository.existsByCorreoElectronico(dto.     getCorreoElectronico())) {
+        if(usuarioRepository.existsByCorreoElectronico(dto.getCorreoElectronico())) {
             throw new UsuarioDuplicadoException(dto.getCorreoElectronico());
         }
 
@@ -61,8 +67,64 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<UsuarioResumenDTO> obtenerTodos() {
-        return usuarioRepository.findAll().stream()
+        //Solo obtenemos los usuarios con rol CLIENTE para que el administrador no vea a los demas administradores
+        return usuarioRepository.findByRolNombre(NombreRol.CLIENTE).stream()
                 .map(usuarioMapper::toResumenDTO)
                 .toList();
+    }
+
+    @Override
+    public Page<UsuarioResponseDTO> obtenerUsuarios(String busqueda, Pageable pageable) {
+        //Solo obtenemos los usuarios con rol CLIENTE (los administradores no son gestionables)
+        return usuarioRepository.obtenerClientes(NombreRol.CLIENTE, busqueda, pageable)
+                .map(usuarioMapper::toResponseDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UsuarioEditRequestDTO obtenerUsuarioEditar(Long id) {
+        //Solo se gestionan usuarios con rol CLIENTE
+        Usuario usuario = verificarCliente(id);
+        return usuarioMapper.toEditRequestDTO(usuario);
+    }
+
+    @Override
+    @Transactional
+    public UsuarioResponseDTO actualizarUsuario(Long id, UsuarioEditRequestDTO dto) {
+        //Solo se gestionan usuarios con rol CLIENTE
+        Usuario usuario = verificarCliente(id);
+
+        //Si el correo cambia, validamos que el nuevo correo no pertenezca a otro usuario
+        if (usuarioRepository.existsByCorreoElectronico(dto.getCorreoElectronico())
+                && !dto.getCorreoElectronico().equals(usuario.getCorreoElectronico())) {
+            throw new UsuarioDuplicadoException(dto.getCorreoElectronico());
+        }
+
+        //El rol del usuario no es editable, se conserva el rol actual
+        //Actualizamos los datos del usuario con los enviados en el dto
+        usuario.setNombre(dto.getNombre());
+        usuario.setCorreoElectronico(dto.getCorreoElectronico());
+        usuario.setTelefono(dto.getTelefono());
+        usuario.setDireccionEnvio(dto.getDireccionEnvio());
+        usuario.setActivo(dto.getActivo());
+
+        //Guardamos el usuario actualizado y lo regresamos en su formato responseDTO
+        return usuarioMapper.toResponseDTO(usuarioRepository.save(usuario));
+    }
+
+    @Override
+    @Transactional
+    public void cambiarEstadoActivo(Long id, boolean activo) {
+        //Solo se gestionan usuarios con rol CLIENTE
+        Usuario usuario = verificarCliente(id);
+        usuario.setActivo(activo);
+        usuarioRepository.save(usuario);
+    }
+
+    //Metodo para validar que el usuario con el id enviado exista y tenga rol CLIENTE
+    private Usuario verificarCliente(Long id) {
+        return usuarioRepository.findById(id)
+                .filter(u -> u.getRol().getNombre() == NombreRol.CLIENTE)
+                .orElseThrow(() -> new UsuarioNotFoundException(id));
     }
 }

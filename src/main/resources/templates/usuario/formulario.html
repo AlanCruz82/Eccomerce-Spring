@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout/header :: header('Editar usuario')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout/navbar :: navbar}"></div>
+
+<main class="container py-4">
+
+    <div th:replace="~{fragments/comun/mensaje-error :: mensaje-error}"></div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+
+                    <h3 class="card-title mb-4">Editar usuario</h3>
+
+                    <form th:action="@{/admin/usuarios/{id}(id=${usuarioId})}"
+                          th:object="${usuario}"
+                          method="post">
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text"
+                                       id="nombre"
+                                       th:field="*{nombre}"
+                                       class="form-control"
+                                       placeholder="Nombre del usuario">
+                                <div class="text-danger small"
+                                     th:if="${#fields.hasErrors('nombre')}"
+                                     th:errors="*{nombre}"></div>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="correoElectronico" class="form-label">Correo electrónico</label>
+                                <input type="email"
+                                       id="correoElectronico"
+                                       th:field="*{correoElectronico}"
+                                       class="form-control"
+                                       placeholder="correo@ejemplo.com">
+                                <div class="text-danger small"
+                                     th:if="${#fields.hasErrors('correoElectronico')}"
+                                     th:errors="*{correoElectronico}"></div>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="tel"
+                                       id="telefono"
+                                       th:field="*{telefono}"
+                                       class="form-control"
+                                       placeholder="5512345678">
+                                <div class="text-danger small"
+                                     th:if="${#fields.hasErrors('telefono')}"
+                                     th:errors="*{telefono}"></div>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="direccionEnvio" class="form-label">Dirección de envío</label>
+                                <input type="text"
+                                       id="direccionEnvio"
+                                       th:field="*{direccionEnvio}"
+                                       class="form-control"
+                                       placeholder="Calle, número, colonia">
+                                <div class="text-danger small"
+                                     th:if="${#fields.hasErrors('direccionEnvio')}"
+                                     th:errors="*{direccionEnvio}"></div>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="rol" class="form-label">Rol</label>
+                                <p class="form-control-plaintext fw-bold" th:text="${usuario.rol}"></p>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="activo" class="form-label">Estado</label>
+                                <select id="activo" th:field="*{activo}" class="form-select">
+                                    <option th:value="true">Activo</option>
+                                    <option th:value="false">Suspendido</option>
+                                </select>
+                                <div class="text-danger small"
+                                     th:if="${#fields.hasErrors('activo')}"
+                                     th:errors="*{activo}"></div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a th:href="@{/admin/usuarios}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> Guardar
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{fragments/layout/footer :: footer}"></footer>
+
+<div th:replace="~{fragments/layout/scripts :: scripts}"></div>
+
+</body>
+</html>

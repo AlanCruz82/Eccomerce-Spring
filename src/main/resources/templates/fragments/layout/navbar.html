@@ -116,6 +116,11 @@
                     <i class="bi bi-box"></i> Pedidos
                 </a>
 
+                <a sec:authorize="hasRole('ADMIN')" class="nav-link text-light px-2"
+                   th:href="@{/admin/usuarios}">
+                    <i class="bi bi-people"></i> Usuarios
+                </a>
+
                 <a sec:authorize="hasRole('CLIENTE')" class="nav-link text-light px-2"
                    th:href="@{/pedidos/usuario}">
                     <i class="bi bi-box"></i> Mis pedidos

@@ -1,6 +1,8 @@
 package com.spring.eccomerce.mapper;
 
+import com.spring.eccomerce.dto.usuario.UsuarioEditRequestDTO;
 import com.spring.eccomerce.dto.usuario.UsuarioRequestDTO;
+import com.spring.eccomerce.dto.usuario.UsuarioResponseDTO;
 import com.spring.eccomerce.dto.usuario.UsuarioResumenDTO;
 import com.spring.eccomerce.entity.Usuario;
 import org.springframework.stereotype.Component;
@@ -27,5 +29,30 @@ public class UsuarioMapper {
                 .nombre(usuario.getNombre())
                 .correoElectronico(usuario.getCorreoElectronico())
                 .build();
+    }
+
+    public UsuarioResponseDTO toResponseDTO(Usuario usuario){
+        return UsuarioResponseDTO.builder()
+                .id(usuario.getId())
+                .nombre(usuario.getNombre())
+                .correoElectronico(usuario.getCorreoElectronico())
+                .telefono(usuario.getTelefono())
+                .direccionEnvio(usuario.getDireccionEnvio())
+                .activo(usuario.getActivo())
+                .rol(usuario.getRol().getNombre())
+                .fechaCreacion(usuario.getFechaCreacion())
+                .fechaActualizacion(usuario.getFechaActualizacion())
+                .build();
+    }
+
+    public UsuarioEditRequestDTO toEditRequestDTO(Usuario usuario){
+        UsuarioEditRequestDTO dto = new UsuarioEditRequestDTO();
+        dto.setNombre(usuario.getNombre());
+        dto.setCorreoElectronico(usuario.getCorreoElectronico());
+        dto.setTelefono(usuario.getTelefono());
+        dto.setDireccionEnvio(usuario.getDireccionEnvio());
+        dto.setRol(usuario.getRol().getNombre());
+        dto.setActivo(usuario.getActivo());
+        return dto;
     }
 }
