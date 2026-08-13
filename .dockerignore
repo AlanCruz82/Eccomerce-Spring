@@ -1,0 +1,16 @@
+#Artefactos de build locales
+target/
+
+#Imagenes subidas localmente (no deben entrar a la imagen)
+uploads/
+
+#Repositorio y configuracion local
+.git
+.gitignore
+.idea
+*.iml
+
+#Documentacion y archivos docker (no son parte de la imagen)
+AGENTS.md
+Dockerfile
+compose.yaml

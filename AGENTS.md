@@ -10,7 +10,18 @@ Java 21, Spring Boot 4.1.0, Thymeleaf (`thymeleaf-extras-springsecurity6`), Spri
 ./mvnw test              # run tests (currently a single context-load test)
 ```
 
-## Environment variables (via `application.yaml` / `application-dev.yaml`)
+## Docker
+- Multi-stage `Dockerfile`: build `maven:3.9-eclipse-temurin-21` (`mvn -DskipTests package`) → runtime `eclipse-temurin:21-jre`, jar `app.jar`, `EXPOSE 8081`.
+- `compose.yaml` services: `mysql:8` (BD `eccomerce`, puerto host `3307:3306`, healthcheck, volumen `mysql-data:/var/lib/mysql`) y `app` (build `.`, `depends_on: service_healthy`, puerto `8081:8081`, volumen `uploads-data:/app/uploads`).
+- El contenedor usa el perfil **`prod`** (`SPRING_PROFILES_ACTIVE=prod` en compose); localmente sigue activo `dev` (default en `application.yaml`). `application-prod.yaml` replica las mismas specs que `application-dev.yaml`.
+- Contraseña MySQL: `MYSQL_PASSWORD`
+```bash
+docker compose up --build   # levanta MySQL + app
+docker compose down         # detiene (sin borrar volumenes)
+docker compose down -v      # detiene y borra los volumenes (mysql-data, uploads-data)
+```
+
+## Environment variables (via `application.yaml` / `application-dev.yaml` / `application-prod.yaml`)
 ```
 DB_URL=jdbc:mysql://localhost:3306/eccomerce
 DB_USER=root
@@ -70,3 +81,4 @@ com.spring.eccomerce
 ## DB
 - Hibernate `ddl-auto: update` — schema auto-managed
 - Tables in Spanish plural: `categorias, productos, usuarios, roles, pedidos, detalles_pedido` + join `roles_permisos`
+- **Seed (perfil prod)**: `spring.sql.init` (`mode: always`, `data-locations: classpath:db/seed.sql`) + `spring.jpa.defer-datasource-initialization: true` (Hibernate crea el esquema antes del seed). `db/seed.sql` es idempotente (`INSERT ... SELECT ... WHERE NOT EXISTS`): inserta roles `ADMIN`/`CLIENTE` y un admin inicial `admin@eccomerce.com` / `admin123` (hash BCrypt)

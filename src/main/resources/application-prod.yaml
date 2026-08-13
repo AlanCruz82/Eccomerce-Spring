@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  #Ejecuta el seed (roles + admin inicial) en cada arranque; el script es idempotente
+  sql:
+    init:
+      mode: always
+      #Ruta donde esta el archivo sql
+      data-locations: classpath:db/seed.sql
+  jpa:
+    #Hibernate crea/actualiza el esquema ANTES de que corra el seed (ddl-auto: update)
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
