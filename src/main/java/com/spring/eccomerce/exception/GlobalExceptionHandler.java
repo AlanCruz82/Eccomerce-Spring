@@ -2,6 +2,7 @@ package com.spring.eccomerce.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -67,6 +68,18 @@ public class GlobalExceptionHandler {
     public String handleRolNotFound(RolNotFoundException ex, RedirectAttributes ra, HttpServletRequest request) {
         ra.addFlashAttribute("error", ex.getMessage());
         return destinoUsuario(request);
+    }
+
+    @ExceptionHandler(ImagenExcedeTamanoException.class)
+    public String handleImagenExcedeTamano(ImagenExcedeTamanoException ex, RedirectAttributes ra) {
+        ra.addFlashAttribute("error", ex.getMessage());
+        return "redirect:/productos";
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String handleMaxUploadSize(MaxUploadSizeExceededException ex, RedirectAttributes ra) {
+        ra.addFlashAttribute("error", "La imagen supera el tamaño máximo permitido");
+        return "redirect:/productos";
     }
 
     @ExceptionHandler(Exception.class)

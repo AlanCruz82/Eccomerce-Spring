@@ -2,6 +2,13 @@ spring:
   application:
     name: Eccomerce
   profiles.active : dev
+  servlet:
+    multipart:
+      #Debe ser MAYOR a storage.max-file-size (2MB) para que la validacion
+      #personalizada (ImagenExcedeTamanoException) se lance antes que la de Spring.
+      #max-request-size > max-file-size para no fallar antes con el tamaño total de la peticion
+      max-file-size: 4MB
+      max-request-size: 5MB
 server:
   port: ${SERVER_PORT:8081}
 storage:
@@ -9,3 +16,5 @@ storage:
   upload-dir: uploads/productos
   #Url que va a regresar las imagenes de los productos
   upload-url: /uploads/productos
+  #Tamaño maximo en MB permitido para las imagenes de los productos
+  max-file-size: 2

@@ -1,6 +1,7 @@
 package com.spring.eccomerce.service.impl.storage;
 
 import com.spring.eccomerce.config.StorageProperties;
+import com.spring.eccomerce.exception.ImagenExcedeTamanoException;
 import com.spring.eccomerce.exception.StorageExcepcion;
 import com.spring.eccomerce.service.StorageService;
 import jakarta.annotation.PostConstruct;
@@ -47,6 +48,12 @@ public class LocalStorageService implements StorageService {
         //Validamos si la imagen enviada no tiene contenido
         if (file.isEmpty()){
             throw new StorageExcepcion("La imagen enviada esta vacia");
+        }
+
+        //Validamos si el peso de la imagen supera el tamaño maximo permitido
+        long maxBytes = properties.getMaxFileSize() * 1024L * 1024L;
+        if (file.getSize() > maxBytes) {
+            throw new ImagenExcedeTamanoException(properties.getMaxFileSize());
         }
 
         try {

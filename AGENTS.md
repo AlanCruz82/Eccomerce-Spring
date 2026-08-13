@@ -42,7 +42,7 @@ com.spring.eccomerce
 - **Repository queries**: derived method names, `@Query` (JPQL), `nativeQuery`, and `JpaSpecificationExecutor` for dynamic filters (`ProductoSpecification`, `PedidoSpecification`).
 
 ## Exception pattern
-- Exceptions extend `ResourceNotFoundException` or `DuplicateResourceException` (both abstract, extend `RuntimeException`); business errors extend `RuntimeException` directly (`CarritoVacioException`, `StockInsuficienteException`, `StorageExcepcion`)
+- Exceptions extend `ResourceNotFoundException` or `DuplicateResourceException` (both abstract, extend `RuntimeException`); business errors extend `RuntimeException` directly (`CarritoVacioException`, `StockInsuficienteException`, `StorageExcepcion`, `ImagenExcedeTamanoException`)
 - `GlobalExceptionHandler` catches each → `ra.addFlashAttribute("error", message)` → redirect
 - Admin CRUD controllers add `ra.addFlashAttribute("creado" | "actualizado" | "eliminado", message)` → redirect. The fragment renders the alert green (`alert-success`) for `creado`, yellow (`alert-warning`) for `actualizado`, red (`alert-danger`) for `eliminado`
 - All views include `fragments/comun/mensaje :: mensaje` to display flash error/success messages
@@ -64,7 +64,7 @@ com.spring.eccomerce
 - **Home top-4 categories**: native query `findTop4CategoriasConMasProductos()` + projection `ICategoriaConCantidad` (top 4 por cantidad de productos)
 - **Product filtering**: `ProductoSpecification` (JPA Criteria) with `JpaSpecificationExecutor`; applies category, name prefix, price min/max range y `existenciaGreaterThan` (stock mínimo, input en `fragments/producto/filtros.html`)
 - **Pagination**: `PageRequest.of(pagina, tamano)` with `@RequestParam(defaultValue = "0") int pagina`
-- **Image storage**: `LocalStorageService` guarda en `uploads/productos` con nombre UUID; `WebConfig` sirve `/uploads/**`; borra imagen al actualizar/eliminar producto
+- **Image storage**: `LocalStorageService` guarda en `uploads/productos` con nombre UUID; `WebConfig` sirve `/uploads/**`; borra imagen al actualizar/eliminar producto. Valida peso: si `file.getSize()` supera `storage.max-file-size` (MB, por defecto 5) lanza `ImagenExcedeTamanoException`. `spring.servlet.multipart.max-file-size` debe ser MAYOR que `storage.max-file-size` (y `max-request-size` > `max-file-size`) para que la validación personalizada se lance antes que `MaxUploadSizeExceededException`; ambos errores (`ImagenExcedeTamanoException` y `MaxUploadSizeExceededException`) → flash `error` → `redirect:/productos`
 - **Redirect after create/update**: `redirect:/<entity>` (list page), flash attributes for errors/success
 
 ## DB

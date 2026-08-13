@@ -14,4 +14,6 @@ public class StorageProperties {
     private String uploadDir;
     //Url donde vamos a servir las imagenes almacenadas
     private String uploadUrl;
+    //Tamaño maximo en MB que puede tener la imagen enviada de un producto
+    private int maxFileSize;
 }
